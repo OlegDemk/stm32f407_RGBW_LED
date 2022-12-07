@@ -1,0 +1,8 @@
+../Core/Src/light/led_stript/control.c:11:6:turn_off_left_stript	8	static
+../Core/Src/light/led_stript/control.c:17:6:turn_off_right_stript	8	static
+../Core/Src/light/led_stript/control.c:23:6:turn_off_left_and_right_dtript	8	static
+../Core/Src/light/led_stript/control.c:29:6:turn_on_left_stript	24	static
+../Core/Src/light/led_stript/control.c:39:6:turn_on_right_stript	24	static
+../Core/Src/light/led_stript/control.c:49:6:turn_all_leds_from_centr	32	static
+../Core/Src/light/led_stript/control.c:68:6:set_left_one_rgbw_led	24	static
+../Core/Src/light/led_stript/control.c:74:6:set_right_one_rgbw_led	24	static
