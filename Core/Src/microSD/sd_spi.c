@@ -6,6 +6,8 @@
  */
 
 
+#include "stdbool.h"
+
 #include <microSD/sd_spi.h>
 
 
@@ -567,15 +569,14 @@ void test_double_buffer(char* name)
  */
 uint8_t open_bin_file(char* name)
 {
-	int i = 0;
-
 	uint16_t vTemp = 0;
 	uint32_t vIndex = 0;
 	static uint32_t vFileSize = 0;
 	uint32_t vBytesReadCounter;
 
-	uint8_t frame_buffer[949] = {0};
+	uint8_t frame_buffer[949] = {0};									// Frame buffer
 	int size_buf_for_read = sizeof(frame_buffer);
+
 	static int how_many_frames = 0;
 
 	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
@@ -605,9 +606,9 @@ uint8_t open_bin_file(char* name)
 
 
 
-	static int open_file_flag = 0;
+	static bool open_file_flag = true;
 
-	if(open_file_flag == 0)		// if file wasn't opened before
+	if(open_file_flag == false)		// if file wasn't opened before
 	{
 		if(f_mount(&SDFatFs, (TCHAR const*)USER_Path, 0))
 		{
@@ -624,25 +625,25 @@ uint8_t open_bin_file(char* name)
 				vFileSize = MyFile.obj.objsize;									// Get size of current file
 				how_many_frames = vFileSize/frame_size;							// How many frames into current file
 
-				open_file_flag = 1;
+				open_file_flag = true;
 				return 0;
 			}
 		}
 	}
 	else
 	{
-		static int h = 0;
+		static int frame = 0;
 
-		if(h >= how_many_frames)
+		if(frame >= how_many_frames)
 		{
 			f_close(&MyFile);
-			open_file_flag = 0;
-			h = 0;
+			open_file_flag = false;
+			frame = 0;
 
 			return 1;
 		}
 
-		for( h; ((h < how_many_frames) && (interrupt_flag == 1)); h++)
+		for(frame; ((frame < how_many_frames) && (interrupt_flag == 1)); frame++)
 		{
 			HAL_GPIO_TogglePin(GPIOE, TEST_OUTPUT_1_Pin);					// For measure
 
@@ -658,11 +659,11 @@ uint8_t open_bin_file(char* name)
 
 			memset(frame_buffer, 0, sizeof(frame_buffer));
 
-			f_lseek(&MyFile, h + ((frame_size - 1)*h));						// shift on one frame
+			f_lseek(&MyFile, frame + ((frame_size - 1)*frame));						// shift on one frame
 			f_read(&MyFile, aBuffer, vTemp, (UINT *)&vBytesReadCounter);
 			f_gets(frame_buffer, size_buf_for_read, &MyFile);     			// Read one fraime into buffer
 
-			if((h > 316) && (h < 330))			// Place in 7.bin file where somsing wrong
+			if((frame > 316) && (frame < 330))			// Place in 7.bin file where somsing wrong
 			{
 				int ggg = 99;
 			}

@@ -1318,6 +1318,7 @@ Discarded input sections
  .text.create_example_bin
                 0x0000000000000000      0x2b4 ./Core/Src/microSD/sd_spi.o
  .debug_macro   0x0000000000000000      0xa78 ./Core/Src/microSD/sd_spi.o
+ .debug_macro   0x0000000000000000       0x22 ./Core/Src/microSD/sd_spi.o
  .debug_macro   0x0000000000000000      0x2a7 ./Core/Src/microSD/sd_spi.o
  .debug_macro   0x0000000000000000       0x2e ./Core/Src/microSD/sd_spi.o
  .debug_macro   0x0000000000000000       0x2f ./Core/Src/microSD/sd_spi.o
@@ -1393,7 +1394,6 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0xdb ./Core/Src/microSD/sd_spi.o
  .debug_macro   0x0000000000000000       0x8e ./Core/Src/microSD/sd_spi.o
  .debug_macro   0x0000000000000000       0x8e ./Core/Src/microSD/sd_spi.o
- .debug_macro   0x0000000000000000       0x22 ./Core/Src/microSD/sd_spi.o
  .debug_macro   0x0000000000000000       0x3a ./Core/Src/microSD/sd_spi.o
  .text          0x0000000000000000       0x14 ./Core/Startup/startup_stm32f407vgtx.o
  .data          0x0000000000000000        0x0 ./Core/Startup/startup_stm32f407vgtx.o
@@ -7721,69 +7721,71 @@ LOAD /opt/st/stm32cubeide_1.10.1/plugins/com.st.stm32cube.ide.mcu.externaltools.
                 0x0000000008012274                . = ALIGN (0x4)
                 0x0000000008012274                _sidata = LOADADDR (.data)
 
-.data           0x0000000020000000       0xc8 load address 0x0000000008012274
+.data           0x0000000020000000       0xc4 load address 0x0000000008012274
                 0x0000000020000000                . = ALIGN (0x4)
                 0x0000000020000000                _sdata = .
  *(.data)
  *(.data*)
  .data.ARGB_BR  0x0000000020000000        0x1 ./Core/Src/light/led_stript/ARGB.o
                 0x0000000020000000                ARGB_BR
- *fill*         0x0000000020000001        0x3 
  .data.flag_firt_command.2
-                0x0000000020000004        0x4 ./Core/Src/main.o
+                0x0000000020000001        0x1 ./Core/Src/main.o
  .data.print_flag.0
-                0x0000000020000008        0x1 ./Core/Src/main.o
- *fill*         0x0000000020000009        0x3 
+                0x0000000020000002        0x1 ./Core/Src/main.o
+ *fill*         0x0000000020000003        0x1 
  .data.SystemCoreClock
-                0x000000002000000c        0x4 ./Core/Src/system_stm32f4xx.o
-                0x000000002000000c                SystemCoreClock
+                0x0000000020000004        0x4 ./Core/Src/system_stm32f4xx.o
+                0x0000000020000004                SystemCoreClock
  .data.frame_size
-                0x0000000020000010        0x4 ./Core/Src/microSD/sd_spi.o
-                0x0000000020000010                frame_size
+                0x0000000020000008        0x4 ./Core/Src/microSD/sd_spi.o
+                0x0000000020000008                frame_size
  .data.start_evenled
-                0x0000000020000014        0x4 ./Core/Src/microSD/sd_spi.o
-                0x0000000020000014                start_evenled
+                0x000000002000000c        0x4 ./Core/Src/microSD/sd_spi.o
+                0x000000002000000c                start_evenled
  .data.strat_left_led
-                0x0000000020000018        0x4 ./Core/Src/microSD/sd_spi.o
-                0x0000000020000018                strat_left_led
+                0x0000000020000010        0x4 ./Core/Src/microSD/sd_spi.o
+                0x0000000020000010                strat_left_led
  .data.end_left_led
-                0x000000002000001c        0x4 ./Core/Src/microSD/sd_spi.o
-                0x000000002000001c                end_left_led
+                0x0000000020000014        0x4 ./Core/Src/microSD/sd_spi.o
+                0x0000000020000014                end_left_led
  .data.strat_right_led
-                0x0000000020000020        0x4 ./Core/Src/microSD/sd_spi.o
-                0x0000000020000020                strat_right_led
+                0x0000000020000018        0x4 ./Core/Src/microSD/sd_spi.o
+                0x0000000020000018                strat_right_led
  .data.end_ritht_led
-                0x0000000020000024        0x4 ./Core/Src/microSD/sd_spi.o
-                0x0000000020000024                end_ritht_led
+                0x000000002000001c        0x4 ./Core/Src/microSD/sd_spi.o
+                0x000000002000001c                end_ritht_led
+ .data.open_file_flag.3
+                0x0000000020000020        0x1 ./Core/Src/microSD/sd_spi.o
+ *fill*         0x0000000020000021        0x3 
  .data.uwTickPrio
-                0x0000000020000028        0x4 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
-                0x0000000020000028                uwTickPrio
+                0x0000000020000024        0x4 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
+                0x0000000020000024                uwTickPrio
  .data.uwTickFreq
-                0x000000002000002c        0x1 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
-                0x000000002000002c                uwTickFreq
- .data.Stat     0x000000002000002d        0x1 ./FATFS/Target/user_diskio.o
- *fill*         0x000000002000002e        0x2 
+                0x0000000020000028        0x1 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
+                0x0000000020000028                uwTickFreq
+ .data.Stat     0x0000000020000029        0x1 ./FATFS/Target/user_diskio.o
+ *fill*         0x000000002000002a        0x2 
  .data.USER_Driver
-                0x0000000020000030       0x14 ./FATFS/Target/user_diskio.o
-                0x0000000020000030                USER_Driver
+                0x000000002000002c       0x14 ./FATFS/Target/user_diskio.o
+                0x000000002000002c                USER_Driver
  .data.CDC_Class
-                0x0000000020000044       0x20 ./Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Src/usbh_cdc.o
-                0x0000000020000044                CDC_Class
+                0x0000000020000040       0x20 ./Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Src/usbh_cdc.o
+                0x0000000020000040                CDC_Class
  .data._impure_ptr
-                0x0000000020000064        0x4 /opt/st/stm32cubeide_1.10.1/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.linux64_1.0.0.202111181127/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc_nano.a(lib_a-impure.o)
-                0x0000000020000064                _impure_ptr
+                0x0000000020000060        0x4 /opt/st/stm32cubeide_1.10.1/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.linux64_1.0.0.202111181127/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc_nano.a(lib_a-impure.o)
+                0x0000000020000060                _impure_ptr
  .data.impure_data
-                0x0000000020000068       0x60 /opt/st/stm32cubeide_1.10.1/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.linux64_1.0.0.202111181127/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc_nano.a(lib_a-impure.o)
+                0x0000000020000064       0x60 /opt/st/stm32cubeide_1.10.1/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.linux64_1.0.0.202111181127/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc_nano.a(lib_a-impure.o)
  *(.RamFunc)
  *(.RamFunc*)
-                0x00000000200000c8                . = ALIGN (0x4)
-                0x00000000200000c8                _edata = .
-                0x000000000801233c                _siccmram = LOADADDR (.ccmram)
+                0x00000000200000c4                . = ALIGN (0x4)
+                0x00000000200000c4                _edata = .
+                0x0000000008012338                _siccmram = LOADADDR (.ccmram)
 
-.igot.plt       0x00000000200000c8        0x0 load address 0x000000000801233c
- .igot.plt      0x00000000200000c8        0x0 /opt/st/stm32cubeide_1.10.1/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.linux64_1.0.0.202111181127/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crtbegin.o
+.igot.plt       0x00000000200000c4        0x0 load address 0x0000000008012338
+ .igot.plt      0x00000000200000c4        0x0 /opt/st/stm32cubeide_1.10.1/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.linux64_1.0.0.202111181127/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crtbegin.o
 
-.ccmram         0x0000000010000000        0x0 load address 0x000000000801233c
+.ccmram         0x0000000010000000        0x0 load address 0x0000000008012338
                 0x0000000010000000                . = ALIGN (0x4)
                 0x0000000010000000                _sccmram = .
  *(.ccmram)
@@ -7792,169 +7794,167 @@ LOAD /opt/st/stm32cubeide_1.10.1/plugins/com.st.stm32cube.ide.mcu.externaltools.
                 0x0000000010000000                _eccmram = .
                 0x0000000010000000                . = ALIGN (0x4)
 
-.bss            0x00000000200000c8     0x3538
-                0x00000000200000c8                _sbss = .
-                0x00000000200000c8                __bss_start__ = _sbss
+.bss            0x00000000200000c4     0x3534
+                0x00000000200000c4                _sbss = .
+                0x00000000200000c4                __bss_start__ = _sbss
  *(.bss)
- .bss           0x00000000200000c8       0x1c /opt/st/stm32cubeide_1.10.1/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.linux64_1.0.0.202111181127/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crtbegin.o
+ .bss           0x00000000200000c4       0x1c /opt/st/stm32cubeide_1.10.1/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.linux64_1.0.0.202111181127/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/crtbegin.o
  *(.bss*)
- .bss.PWM_HI    0x00000000200000e4        0x1 ./Core/Src/light/led_stript/ARGB.o
-                0x00000000200000e4                PWM_HI
- .bss.PWM_LO    0x00000000200000e5        0x1 ./Core/Src/light/led_stript/ARGB.o
-                0x00000000200000e5                PWM_LO
- *fill*         0x00000000200000e6        0x2 
+ .bss.PWM_HI    0x00000000200000e0        0x1 ./Core/Src/light/led_stript/ARGB.o
+                0x00000000200000e0                PWM_HI
+ .bss.PWM_LO    0x00000000200000e1        0x1 ./Core/Src/light/led_stript/ARGB.o
+                0x00000000200000e1                PWM_LO
+ *fill*         0x00000000200000e2        0x2 
  .bss.RGB_BUF_LEFT
-                0x00000000200000e8      0x154 ./Core/Src/light/led_stript/ARGB.o
-                0x00000000200000e8                RGB_BUF_LEFT
+                0x00000000200000e4      0x154 ./Core/Src/light/led_stript/ARGB.o
+                0x00000000200000e4                RGB_BUF_LEFT
  .bss.RGB_BUF_RIGHT
-                0x000000002000023c      0x154 ./Core/Src/light/led_stript/ARGB.o
-                0x000000002000023c                RGB_BUF_RIGHT
+                0x0000000020000238      0x154 ./Core/Src/light/led_stript/ARGB.o
+                0x0000000020000238                RGB_BUF_RIGHT
  .bss.PWM_BUF_LEFT
-                0x0000000020000390      0x100 ./Core/Src/light/led_stript/ARGB.o
-                0x0000000020000390                PWM_BUF_LEFT
+                0x000000002000038c      0x100 ./Core/Src/light/led_stript/ARGB.o
+                0x000000002000038c                PWM_BUF_LEFT
  .bss.PWM_BUF_RIGHT
-                0x0000000020000490      0x100 ./Core/Src/light/led_stript/ARGB.o
-                0x0000000020000490                PWM_BUF_RIGHT
+                0x000000002000048c      0x100 ./Core/Src/light/led_stript/ARGB.o
+                0x000000002000048c                PWM_BUF_RIGHT
  .bss.BUF_COUNTER_LEFT
-                0x0000000020000590        0x2 ./Core/Src/light/led_stript/ARGB.o
-                0x0000000020000590                BUF_COUNTER_LEFT
+                0x000000002000058c        0x2 ./Core/Src/light/led_stript/ARGB.o
+                0x000000002000058c                BUF_COUNTER_LEFT
  .bss.BUF_COUNTER_RIGHT
-                0x0000000020000592        0x2 ./Core/Src/light/led_stript/ARGB.o
-                0x0000000020000592                BUF_COUNTER_RIGHT
+                0x000000002000058e        0x2 ./Core/Src/light/led_stript/ARGB.o
+                0x000000002000058e                BUF_COUNTER_RIGHT
  .bss.ARGB_LOC_ST_LEFT
-                0x0000000020000594        0x1 ./Core/Src/light/led_stript/ARGB.o
-                0x0000000020000594                ARGB_LOC_ST_LEFT
+                0x0000000020000590        0x1 ./Core/Src/light/led_stript/ARGB.o
+                0x0000000020000590                ARGB_LOC_ST_LEFT
  .bss.ARGB_LOC_ST_RIGHT
-                0x0000000020000595        0x1 ./Core/Src/light/led_stript/ARGB.o
-                0x0000000020000595                ARGB_LOC_ST_RIGHT
- *fill*         0x0000000020000596        0x2 
- .bss.SDFatFs   0x0000000020000598     0x1038 ./Core/Src/main.o
-                0x0000000020000598                SDFatFs
+                0x0000000020000591        0x1 ./Core/Src/light/led_stript/ARGB.o
+                0x0000000020000591                ARGB_LOC_ST_RIGHT
+ *fill*         0x0000000020000592        0x2 
+ .bss.SDFatFs   0x0000000020000594     0x1038 ./Core/Src/main.o
+                0x0000000020000594                SDFatFs
  .bss.uart_RX_data
-                0x00000000200015d0        0x1 ./Core/Src/main.o
-                0x00000000200015d0                uart_RX_data
+                0x00000000200015cc        0x1 ./Core/Src/main.o
+                0x00000000200015cc                uart_RX_data
  .bss.flag_received_command
-                0x00000000200015d1        0x1 ./Core/Src/main.o
-                0x00000000200015d1                flag_received_command
+                0x00000000200015cd        0x1 ./Core/Src/main.o
+                0x00000000200015cd                flag_received_command
  .bss.interrupt_animation_flag
-                0x00000000200015d2        0x1 ./Core/Src/main.o
-                0x00000000200015d2                interrupt_animation_flag
- *fill*         0x00000000200015d3        0x1 
+                0x00000000200015ce        0x1 ./Core/Src/main.o
+                0x00000000200015ce                interrupt_animation_flag
+ *fill*         0x00000000200015cf        0x1 
  .bss.rx_buf_command
-                0x00000000200015d4        0xa ./Core/Src/main.o
-                0x00000000200015d4                rx_buf_command
+                0x00000000200015d0        0xa ./Core/Src/main.o
+                0x00000000200015d0                rx_buf_command
  .bss.count_chars
-                0x00000000200015de        0x1 ./Core/Src/main.o
-                0x00000000200015de                count_chars
+                0x00000000200015da        0x1 ./Core/Src/main.o
+                0x00000000200015da                count_chars
  .bss.interrupt_flag
-                0x00000000200015df        0x1 ./Core/Src/main.o
-                0x00000000200015df                interrupt_flag
- .bss.hspi1     0x00000000200015e0       0x58 ./Core/Src/main.o
-                0x00000000200015e0                hspi1
- .bss.htim2     0x0000000020001638       0x48 ./Core/Src/main.o
-                0x0000000020001638                htim2
- .bss.htim3     0x0000000020001680       0x48 ./Core/Src/main.o
-                0x0000000020001680                htim3
- .bss.htim4     0x00000000200016c8       0x48 ./Core/Src/main.o
-                0x00000000200016c8                htim4
- .bss.htim5     0x0000000020001710       0x48 ./Core/Src/main.o
-                0x0000000020001710                htim5
- .bss.htim8     0x0000000020001758       0x48 ./Core/Src/main.o
-                0x0000000020001758                htim8
- .bss.htim13    0x00000000200017a0       0x48 ./Core/Src/main.o
-                0x00000000200017a0                htim13
+                0x00000000200015db        0x1 ./Core/Src/main.o
+                0x00000000200015db                interrupt_flag
+ .bss.hspi1     0x00000000200015dc       0x58 ./Core/Src/main.o
+                0x00000000200015dc                hspi1
+ .bss.htim2     0x0000000020001634       0x48 ./Core/Src/main.o
+                0x0000000020001634                htim2
+ .bss.htim3     0x000000002000167c       0x48 ./Core/Src/main.o
+                0x000000002000167c                htim3
+ .bss.htim4     0x00000000200016c4       0x48 ./Core/Src/main.o
+                0x00000000200016c4                htim4
+ .bss.htim5     0x000000002000170c       0x48 ./Core/Src/main.o
+                0x000000002000170c                htim5
+ .bss.htim8     0x0000000020001754       0x48 ./Core/Src/main.o
+                0x0000000020001754                htim8
+ .bss.htim13    0x000000002000179c       0x48 ./Core/Src/main.o
+                0x000000002000179c                htim13
  .bss.hdma_tim8_ch3
-                0x00000000200017e8       0x60 ./Core/Src/main.o
-                0x00000000200017e8                hdma_tim8_ch3
+                0x00000000200017e4       0x60 ./Core/Src/main.o
+                0x00000000200017e4                hdma_tim8_ch3
  .bss.hdma_tim8_ch4_trig_com
-                0x0000000020001848       0x60 ./Core/Src/main.o
-                0x0000000020001848                hdma_tim8_ch4_trig_com
- .bss.huart3    0x00000000200018a8       0x44 ./Core/Src/main.o
-                0x00000000200018a8                huart3
+                0x0000000020001844       0x60 ./Core/Src/main.o
+                0x0000000020001844                hdma_tim8_ch4_trig_com
+ .bss.huart3    0x00000000200018a4       0x44 ./Core/Src/main.o
+                0x00000000200018a4                huart3
  .bss.buf_str.1
-                0x00000000200018ec        0xa ./Core/Src/main.o
- *fill*         0x00000000200018f6        0x2 
+                0x00000000200018e8        0xa ./Core/Src/main.o
+ *fill*         0x00000000200018f2        0x2 
  .bss.__sbrk_heap_end
-                0x00000000200018f8        0x4 ./Core/Src/sysmem.o
+                0x00000000200018f4        0x4 ./Core/Src/sysmem.o
  .bss.USER_Path
-                0x00000000200018fc        0x4 ./Core/Src/microSD/sd_spi.o
-                0x00000000200018fc                USER_Path
- .bss.fs        0x0000000020001900        0x4 ./Core/Src/microSD/sd_spi.o
-                0x0000000020001900                fs
- .bss.MyFile    0x0000000020001904     0x1030 ./Core/Src/microSD/sd_spi.o
-                0x0000000020001904                MyFile
- .bss.sdinfo    0x0000000020002934        0x1 ./Core/Src/microSD/sd_spi.o
-                0x0000000020002934                sdinfo
- *fill*         0x0000000020002935        0x3 
+                0x00000000200018f8        0x4 ./Core/Src/microSD/sd_spi.o
+                0x00000000200018f8                USER_Path
+ .bss.fs        0x00000000200018fc        0x4 ./Core/Src/microSD/sd_spi.o
+                0x00000000200018fc                fs
+ .bss.MyFile    0x0000000020001900     0x1030 ./Core/Src/microSD/sd_spi.o
+                0x0000000020001900                MyFile
+ .bss.sdinfo    0x0000000020002930        0x1 ./Core/Src/microSD/sd_spi.o
+                0x0000000020002930                sdinfo
+ *fill*         0x0000000020002931        0x3 
  .bss.sFileInfo
-                0x0000000020002938      0x118 ./Core/Src/microSD/sd_spi.o
-                0x0000000020002938                sFileInfo
+                0x0000000020002934      0x118 ./Core/Src/microSD/sd_spi.o
+                0x0000000020002934                sFileInfo
  .bss.sDirectory
-                0x0000000020002a50       0x34 ./Core/Src/microSD/sd_spi.o
-                0x0000000020002a50                sDirectory
+                0x0000000020002a4c       0x34 ./Core/Src/microSD/sd_spi.o
+                0x0000000020002a4c                sDirectory
  .bss.aStringBuffer
-                0x0000000020002a84       0x3c ./Core/Src/microSD/sd_spi.o
-                0x0000000020002a84                aStringBuffer
- .bss.aBuffer   0x0000000020002ac0      0x200 ./Core/Src/microSD/sd_spi.o
-                0x0000000020002ac0                aBuffer
- .bss.open_file_flag.3
-                0x0000000020002cc0        0x4 ./Core/Src/microSD/sd_spi.o
+                0x0000000020002a80       0x3c ./Core/Src/microSD/sd_spi.o
+                0x0000000020002a80                aStringBuffer
+ .bss.aBuffer   0x0000000020002abc      0x200 ./Core/Src/microSD/sd_spi.o
+                0x0000000020002abc                aBuffer
  .bss.vFileSize.2
-                0x0000000020002cc4        0x4 ./Core/Src/microSD/sd_spi.o
+                0x0000000020002cbc        0x4 ./Core/Src/microSD/sd_spi.o
  .bss.how_many_frames.1
-                0x0000000020002cc8        0x4 ./Core/Src/microSD/sd_spi.o
- .bss.h.0       0x0000000020002ccc        0x4 ./Core/Src/microSD/sd_spi.o
- .bss.uwTick    0x0000000020002cd0        0x4 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
-                0x0000000020002cd0                uwTick
- .bss.retUSER   0x0000000020002cd4        0x1 ./FATFS/App/fatfs.o
-                0x0000000020002cd4                retUSER
- *fill*         0x0000000020002cd5        0x3 
- .bss.USERPath  0x0000000020002cd8        0x4 ./FATFS/App/fatfs.o
-                0x0000000020002cd8                USERPath
- .bss.FatFs     0x0000000020002cdc        0x4 ./Middlewares/Third_Party/FatFs/src/ff.o
- .bss.Fsid      0x0000000020002ce0        0x2 ./Middlewares/Third_Party/FatFs/src/ff.o
- *fill*         0x0000000020002ce2        0x2 
- .bss.Files     0x0000000020002ce4       0x20 ./Middlewares/Third_Party/FatFs/src/ff.o
- .bss.LfnBuf    0x0000000020002d04      0x200 ./Middlewares/Third_Party/FatFs/src/ff.o
- .bss.disk      0x0000000020002f04        0xc ./Middlewares/Third_Party/FatFs/src/ff_gen_drv.o
-                0x0000000020002f04                disk
+                0x0000000020002cc0        0x4 ./Core/Src/microSD/sd_spi.o
+ .bss.frame.0   0x0000000020002cc4        0x4 ./Core/Src/microSD/sd_spi.o
+ .bss.uwTick    0x0000000020002cc8        0x4 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
+                0x0000000020002cc8                uwTick
+ .bss.retUSER   0x0000000020002ccc        0x1 ./FATFS/App/fatfs.o
+                0x0000000020002ccc                retUSER
+ *fill*         0x0000000020002ccd        0x3 
+ .bss.USERPath  0x0000000020002cd0        0x4 ./FATFS/App/fatfs.o
+                0x0000000020002cd0                USERPath
+ .bss.FatFs     0x0000000020002cd4        0x4 ./Middlewares/Third_Party/FatFs/src/ff.o
+ .bss.Fsid      0x0000000020002cd8        0x2 ./Middlewares/Third_Party/FatFs/src/ff.o
+ *fill*         0x0000000020002cda        0x2 
+ .bss.Files     0x0000000020002cdc       0x20 ./Middlewares/Third_Party/FatFs/src/ff.o
+ .bss.LfnBuf    0x0000000020002cfc      0x200 ./Middlewares/Third_Party/FatFs/src/ff.o
+ .bss.disk      0x0000000020002efc        0xc ./Middlewares/Third_Party/FatFs/src/ff_gen_drv.o
+                0x0000000020002efc                disk
  .bss.hUsbHostFS
-                0x0000000020002f10      0x3d8 ./USB_HOST/App/usb_host.o
-                0x0000000020002f10                hUsbHostFS
+                0x0000000020002f08      0x3d8 ./USB_HOST/App/usb_host.o
+                0x0000000020002f08                hUsbHostFS
  .bss.Appli_state
-                0x00000000200032e8        0x1 ./USB_HOST/App/usb_host.o
-                0x00000000200032e8                Appli_state
- *fill*         0x00000000200032e9        0x3 
+                0x00000000200032e0        0x1 ./USB_HOST/App/usb_host.o
+                0x00000000200032e0                Appli_state
+ *fill*         0x00000000200032e1        0x3 
  .bss.hhcd_USB_OTG_FS
-                0x00000000200032ec      0x304 ./USB_HOST/Target/usbh_conf.o
-                0x00000000200032ec                hhcd_USB_OTG_FS
+                0x00000000200032e4      0x304 ./USB_HOST/Target/usbh_conf.o
+                0x00000000200032e4                hhcd_USB_OTG_FS
  .bss.__malloc_free_list
-                0x00000000200035f0        0x4 /opt/st/stm32cubeide_1.10.1/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.linux64_1.0.0.202111181127/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc_nano.a(lib_a-nano-mallocr.o)
-                0x00000000200035f0                __malloc_free_list
+                0x00000000200035e8        0x4 /opt/st/stm32cubeide_1.10.1/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.linux64_1.0.0.202111181127/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc_nano.a(lib_a-nano-mallocr.o)
+                0x00000000200035e8                __malloc_free_list
  .bss.__malloc_sbrk_start
-                0x00000000200035f4        0x4 /opt/st/stm32cubeide_1.10.1/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.linux64_1.0.0.202111181127/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc_nano.a(lib_a-nano-mallocr.o)
-                0x00000000200035f4                __malloc_sbrk_start
- .bss.errno     0x00000000200035f8        0x4 /opt/st/stm32cubeide_1.10.1/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.linux64_1.0.0.202111181127/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc_nano.a(lib_a-reent.o)
-                0x00000000200035f8                errno
+                0x00000000200035ec        0x4 /opt/st/stm32cubeide_1.10.1/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.linux64_1.0.0.202111181127/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc_nano.a(lib_a-nano-mallocr.o)
+                0x00000000200035ec                __malloc_sbrk_start
+ .bss.errno     0x00000000200035f0        0x4 /opt/st/stm32cubeide_1.10.1/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.linux64_1.0.0.202111181127/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc_nano.a(lib_a-reent.o)
+                0x00000000200035f0                errno
  .bss.__lock___malloc_recursive_mutex
-                0x00000000200035fc        0x1 /opt/st/stm32cubeide_1.10.1/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.linux64_1.0.0.202111181127/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc_nano.a(lib_a-lock.o)
-                0x00000000200035fc                __lock___malloc_recursive_mutex
+                0x00000000200035f4        0x1 /opt/st/stm32cubeide_1.10.1/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.linux64_1.0.0.202111181127/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libc_nano.a(lib_a-lock.o)
+                0x00000000200035f4                __lock___malloc_recursive_mutex
  *(COMMON)
-                0x0000000020003600                . = ALIGN (0x4)
- *fill*         0x00000000200035fd        0x3 
-                0x0000000020003600                _ebss = .
-                0x0000000020003600                __bss_end__ = _ebss
+                0x00000000200035f8                . = ALIGN (0x4)
+ *fill*         0x00000000200035f5        0x3 
+                0x00000000200035f8                _ebss = .
+                0x00000000200035f8                __bss_end__ = _ebss
 
 ._user_heap_stack
-                0x0000000020003600      0x600
-                0x0000000020003600                . = ALIGN (0x8)
+                0x00000000200035f8      0x600
+                0x00000000200035f8                . = ALIGN (0x8)
                 [!provide]                        PROVIDE (end = .)
-                0x0000000020003600                PROVIDE (_end = .)
-                0x0000000020003800                . = (. + _Min_Heap_Size)
- *fill*         0x0000000020003600      0x200 
-                0x0000000020003c00                . = (. + _Min_Stack_Size)
- *fill*         0x0000000020003800      0x400 
-                0x0000000020003c00                . = ALIGN (0x8)
+                0x00000000200035f8                PROVIDE (_end = .)
+                0x00000000200037f8                . = (. + _Min_Heap_Size)
+ *fill*         0x00000000200035f8      0x200 
+                0x0000000020003bf8                . = (. + _Min_Stack_Size)
+ *fill*         0x00000000200037f8      0x400 
+                0x0000000020003bf8                . = ALIGN (0x8)
 
 /DISCARD/
  libc.a(*)
@@ -8100,7 +8100,7 @@ LOAD /opt/st/stm32cubeide_1.10.1/plugins/com.st.stm32cube.ide.mcu.externaltools.
 LOAD /opt/st/stm32cubeide_1.10.1/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.linux64_1.0.0.202111181127/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard/libm.a
 LOAD /opt/st/stm32cubeide_1.10.1/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.linux64_1.0.0.202111181127/tools/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7e-m+fp/hard/libgcc.a
 
-.debug_info     0x0000000000000000    0x226ba
+.debug_info     0x0000000000000000    0x226ae
  .debug_info    0x0000000000000000      0x97e ./Core/Src/light/led_stop/stop_light.o
  .debug_info    0x000000000000097e     0x12a7 ./Core/Src/light/led_stript/ARGB.o
  .debug_info    0x0000000000001c25      0x3a0 ./Core/Src/light/led_stript/control.o
@@ -8109,33 +8109,33 @@ LOAD /opt/st/stm32cubeide_1.10.1/plugins/com.st.stm32cube.ide.mcu.externaltools.
  .debug_info    0x00000000000053dd      0xf65 ./Core/Src/stm32f4xx_it.o
  .debug_info    0x0000000000006342      0x171 ./Core/Src/sysmem.o
  .debug_info    0x00000000000064b3      0x523 ./Core/Src/system_stm32f4xx.o
- .debug_info    0x00000000000069d6     0x20ea ./Core/Src/microSD/sd_spi.o
- .debug_info    0x0000000000008ac0       0x22 ./Core/Startup/startup_stm32f407vgtx.o
- .debug_info    0x0000000000008ae2      0x97c ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
- .debug_info    0x000000000000945e      0xe1b ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
- .debug_info    0x000000000000a279      0x94f ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.o
- .debug_info    0x000000000000abc8      0x76a ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
- .debug_info    0x000000000000b332     0x10c6 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_hcd.o
- .debug_info    0x000000000000c3f8      0x966 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
- .debug_info    0x000000000000cd5e     0x1758 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.o
- .debug_info    0x000000000000e4b6     0x2bbe ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.o
- .debug_info    0x0000000000011074     0x15e0 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.o
- .debug_info    0x0000000000012654     0x31bc ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.o
- .debug_info    0x0000000000015810     0x1a97 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_usb.o
- .debug_info    0x00000000000172a7      0x526 ./FATFS/App/fatfs.o
- .debug_info    0x00000000000177cd      0x535 ./FATFS/Target/user_diskio.o
- .debug_info    0x0000000000017d02     0x150d ./Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Src/usbh_cdc.o
- .debug_info    0x000000000001920f     0x1065 ./Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_core.o
- .debug_info    0x000000000001a274     0x1083 ./Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ctlreq.o
- .debug_info    0x000000000001b2f7      0xcf6 ./Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.o
- .debug_info    0x000000000001bfed      0xb34 ./Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_pipes.o
- .debug_info    0x000000000001cb21      0x412 ./Middlewares/Third_Party/FatFs/src/diskio.o
- .debug_info    0x000000000001cf33     0x284f ./Middlewares/Third_Party/FatFs/src/ff.o
- .debug_info    0x000000000001f782      0x3a9 ./Middlewares/Third_Party/FatFs/src/ff_gen_drv.o
- .debug_info    0x000000000001fb2b      0x1c6 ./Middlewares/Third_Party/FatFs/src/option/ccsbcs.o
- .debug_info    0x000000000001fcf1      0xab3 ./USB_HOST/App/usb_host.o
- .debug_info    0x00000000000207a4     0x1d2d ./USB_HOST/Target/usbh_conf.o
- .debug_info    0x00000000000224d1      0x1e9 ./USB_HOST/Target/usbh_platform.o
+ .debug_info    0x00000000000069d6     0x20de ./Core/Src/microSD/sd_spi.o
+ .debug_info    0x0000000000008ab4       0x22 ./Core/Startup/startup_stm32f407vgtx.o
+ .debug_info    0x0000000000008ad6      0x97c ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
+ .debug_info    0x0000000000009452      0xe1b ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
+ .debug_info    0x000000000000a26d      0x94f ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.o
+ .debug_info    0x000000000000abbc      0x76a ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
+ .debug_info    0x000000000000b326     0x10c6 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_hcd.o
+ .debug_info    0x000000000000c3ec      0x966 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
+ .debug_info    0x000000000000cd52     0x1758 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.o
+ .debug_info    0x000000000000e4aa     0x2bbe ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.o
+ .debug_info    0x0000000000011068     0x15e0 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.o
+ .debug_info    0x0000000000012648     0x31bc ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.o
+ .debug_info    0x0000000000015804     0x1a97 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_usb.o
+ .debug_info    0x000000000001729b      0x526 ./FATFS/App/fatfs.o
+ .debug_info    0x00000000000177c1      0x535 ./FATFS/Target/user_diskio.o
+ .debug_info    0x0000000000017cf6     0x150d ./Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Src/usbh_cdc.o
+ .debug_info    0x0000000000019203     0x1065 ./Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_core.o
+ .debug_info    0x000000000001a268     0x1083 ./Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ctlreq.o
+ .debug_info    0x000000000001b2eb      0xcf6 ./Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.o
+ .debug_info    0x000000000001bfe1      0xb34 ./Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_pipes.o
+ .debug_info    0x000000000001cb15      0x412 ./Middlewares/Third_Party/FatFs/src/diskio.o
+ .debug_info    0x000000000001cf27     0x284f ./Middlewares/Third_Party/FatFs/src/ff.o
+ .debug_info    0x000000000001f776      0x3a9 ./Middlewares/Third_Party/FatFs/src/ff_gen_drv.o
+ .debug_info    0x000000000001fb1f      0x1c6 ./Middlewares/Third_Party/FatFs/src/option/ccsbcs.o
+ .debug_info    0x000000000001fce5      0xab3 ./USB_HOST/App/usb_host.o
+ .debug_info    0x0000000000020798     0x1d2d ./USB_HOST/Target/usbh_conf.o
+ .debug_info    0x00000000000224c5      0x1e9 ./USB_HOST/Target/usbh_platform.o
 
 .debug_abbrev   0x0000000000000000     0x4d58
  .debug_abbrev  0x0000000000000000      0x1d1 ./Core/Src/light/led_stop/stop_light.o
@@ -8422,7 +8422,7 @@ LOAD /opt/st/stm32cubeide_1.10.1/plugins/com.st.stm32cube.ide.mcu.externaltools.
  .debug_macro   0x00000000000270fe      0x41e ./USB_HOST/Target/usbh_conf.o
  .debug_macro   0x000000000002751c      0x205 ./USB_HOST/Target/usbh_platform.o
 
-.debug_line     0x0000000000000000    0x244cd
+.debug_line     0x0000000000000000    0x244c8
  .debug_line    0x0000000000000000      0xb05 ./Core/Src/light/led_stop/stop_light.o
  .debug_line    0x0000000000000b05     0x196b ./Core/Src/light/led_stript/ARGB.o
  .debug_line    0x0000000000002470      0xaaf ./Core/Src/light/led_stript/control.o
@@ -8431,33 +8431,33 @@ LOAD /opt/st/stm32cubeide_1.10.1/plugins/com.st.stm32cube.ide.mcu.externaltools.
  .debug_line    0x0000000000004911      0x85f ./Core/Src/stm32f4xx_it.o
  .debug_line    0x0000000000005170      0x4bd ./Core/Src/sysmem.o
  .debug_line    0x000000000000562d      0x75d ./Core/Src/system_stm32f4xx.o
- .debug_line    0x0000000000005d8a     0x14e6 ./Core/Src/microSD/sd_spi.o
- .debug_line    0x0000000000007270       0x88 ./Core/Startup/startup_stm32f407vgtx.o
- .debug_line    0x00000000000072f8      0x9c3 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
- .debug_line    0x0000000000007cbb      0xc72 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
- .debug_line    0x000000000000892d      0xf27 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.o
- .debug_line    0x0000000000009854      0xb37 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
- .debug_line    0x000000000000a38b     0x11c0 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_hcd.o
- .debug_line    0x000000000000b54b      0xd3f ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
- .debug_line    0x000000000000c28a     0x1c4d ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.o
- .debug_line    0x000000000000ded7     0x36b7 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.o
- .debug_line    0x000000000001158e     0x19c0 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.o
- .debug_line    0x0000000000012f4e     0x2a68 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.o
- .debug_line    0x00000000000159b6     0x1a80 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_usb.o
- .debug_line    0x0000000000017436      0x8bd ./FATFS/App/fatfs.o
- .debug_line    0x0000000000017cf3      0xaea ./FATFS/Target/user_diskio.o
- .debug_line    0x00000000000187dd      0xee6 ./Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Src/usbh_cdc.o
- .debug_line    0x00000000000196c3     0x1162 ./Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_core.o
- .debug_line    0x000000000001a825     0x1025 ./Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ctlreq.o
- .debug_line    0x000000000001b84a      0xabe ./Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.o
- .debug_line    0x000000000001c308      0xa68 ./Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_pipes.o
- .debug_line    0x000000000001cd70      0x92c ./Middlewares/Third_Party/FatFs/src/diskio.o
- .debug_line    0x000000000001d69c     0x3cd3 ./Middlewares/Third_Party/FatFs/src/ff.o
- .debug_line    0x000000000002136f      0x94a ./Middlewares/Third_Party/FatFs/src/ff_gen_drv.o
- .debug_line    0x0000000000021cb9      0x98a ./Middlewares/Third_Party/FatFs/src/option/ccsbcs.o
- .debug_line    0x0000000000022643      0xa52 ./USB_HOST/App/usb_host.o
- .debug_line    0x0000000000023095      0xd2a ./USB_HOST/Target/usbh_conf.o
- .debug_line    0x0000000000023dbf      0x70e ./USB_HOST/Target/usbh_platform.o
+ .debug_line    0x0000000000005d8a     0x14e1 ./Core/Src/microSD/sd_spi.o
+ .debug_line    0x000000000000726b       0x88 ./Core/Startup/startup_stm32f407vgtx.o
+ .debug_line    0x00000000000072f3      0x9c3 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
+ .debug_line    0x0000000000007cb6      0xc72 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
+ .debug_line    0x0000000000008928      0xf27 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.o
+ .debug_line    0x000000000000984f      0xb37 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
+ .debug_line    0x000000000000a386     0x11c0 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_hcd.o
+ .debug_line    0x000000000000b546      0xd3f ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
+ .debug_line    0x000000000000c285     0x1c4d ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.o
+ .debug_line    0x000000000000ded2     0x36b7 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.o
+ .debug_line    0x0000000000011589     0x19c0 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.o
+ .debug_line    0x0000000000012f49     0x2a68 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.o
+ .debug_line    0x00000000000159b1     0x1a80 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_usb.o
+ .debug_line    0x0000000000017431      0x8bd ./FATFS/App/fatfs.o
+ .debug_line    0x0000000000017cee      0xaea ./FATFS/Target/user_diskio.o
+ .debug_line    0x00000000000187d8      0xee6 ./Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Src/usbh_cdc.o
+ .debug_line    0x00000000000196be     0x1162 ./Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_core.o
+ .debug_line    0x000000000001a820     0x1025 ./Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ctlreq.o
+ .debug_line    0x000000000001b845      0xabe ./Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_ioreq.o
+ .debug_line    0x000000000001c303      0xa68 ./Middlewares/ST/STM32_USB_Host_Library/Core/Src/usbh_pipes.o
+ .debug_line    0x000000000001cd6b      0x92c ./Middlewares/Third_Party/FatFs/src/diskio.o
+ .debug_line    0x000000000001d697     0x3cd3 ./Middlewares/Third_Party/FatFs/src/ff.o
+ .debug_line    0x000000000002136a      0x94a ./Middlewares/Third_Party/FatFs/src/ff_gen_drv.o
+ .debug_line    0x0000000000021cb4      0x98a ./Middlewares/Third_Party/FatFs/src/option/ccsbcs.o
+ .debug_line    0x000000000002263e      0xa52 ./USB_HOST/App/usb_host.o
+ .debug_line    0x0000000000023090      0xd2a ./USB_HOST/Target/usbh_conf.o
+ .debug_line    0x0000000000023dba      0x70e ./USB_HOST/Target/usbh_platform.o
 
 .debug_str      0x0000000000000000    0xd5826
  .debug_str     0x0000000000000000    0xc6a08 ./Core/Src/light/led_stop/stop_light.o
@@ -8477,7 +8477,7 @@ LOAD /opt/st/stm32cubeide_1.10.1/plugins/com.st.stm32cube.ide.mcu.externaltools.
  .debug_str     0x00000000000cdc0b       0xdb ./Core/Src/system_stm32f4xx.o
                                       0xc5c24 (size before relaxing)
  .debug_str     0x00000000000cdce6      0x5e9 ./Core/Src/microSD/sd_spi.o
-                                      0xcbc67 (size before relaxing)
+                                      0xcbc6d (size before relaxing)
  .debug_str     0x00000000000ce2cf       0x36 ./Core/Startup/startup_stm32f407vgtx.o
                                          0x8f (size before relaxing)
  .debug_str     0x00000000000ce305      0x5e6 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o

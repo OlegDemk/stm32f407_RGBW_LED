@@ -229,14 +229,14 @@ int main(void)
 	  if(flag_received_command == true)
 	  {
 		  static char buf_str[10] = {0};
-		  static int flag_firt_command = 1;
+		  static bool flag_firt_command = true;
 
-		  if(flag_firt_command == 1)							// Read file first time
+		  if(flag_firt_command == true)											// Read file first time
 		  {
 			  memset(buf_str, 0, sizeof(buf_str));
 			  strcat(buf_str, rx_buf_command);
 			  strcat(buf_str, ".bin");
-			  flag_firt_command = 0;
+			  flag_firt_command = false;
 		  }
 		  else
 		  {
@@ -262,7 +262,7 @@ int main(void)
 				  HAL_UART_Transmit_IT(&huart3, msg_buf, sizeof(msg_buf));
 
 				  flag_received_command = false;									// Out
-				  flag_firt_command = 1;
+				  flag_firt_command = true;
 				  print_flag = true;
 			  }
 		  }
