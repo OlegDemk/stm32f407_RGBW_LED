@@ -212,13 +212,7 @@ int main(void)
 
   HAL_TIM_Base_Start_IT(&htim5);       										//використати цей таймер для синхронізації
 
-
   init_tim_13(40);				// Set value in milisecond
-  // HAL_TIM_Base_Start_IT(&htim11);				// Для формування 25 Hz
-
-
-
-
 
   /* USER CODE END 2 */
 
@@ -227,45 +221,30 @@ int main(void)
 
 
 
-
-
-//   TASKS
-//   	   1. Зробити функцію зупинки анімації			DONE
-//   	   2. Зробити точне лалаштування затримки
-
-
-
-
   while (1)
   {
-	  //test_function();
-
-//	  test_function_2(400);			// 25Hz
-//	  HAL_GPIO_TogglePin(GPIOE, TEST_OUTPUT_Pin);
-
 	  //test_double_buffer();
-
-
 	  //test_function_generate_delay();
-
 
 	  if(flag_received_command == true)
 	  {
 		  static char buf_str[10] = {0};
 		  static int flag_firt_command = 1;
 
-		  if(flag_firt_command == 1)
+		  if(flag_firt_command == 1)							// Read file first time
 		  {
+			  memset(buf_str, 0, sizeof(buf_str));
 			  strcat(buf_str, rx_buf_command);
 			  strcat(buf_str, ".bin");
 			  flag_firt_command = 0;
 		  }
 		  else
 		  {
-			  if(open_bin_file(buf_str) == 0)
+			  static bool print_flag = true;
+
+			  if(open_bin_file(buf_str) == 0)										// Read file
 			  {
-				  static bool print_flag = true;
-				  if(print_flag == true)
+				  if(print_flag == true)											// Print only one time
 				  {
 					  memset(msg_buf, 0, sizeof(msg_buf));
 					  strcat(msg_buf, rx_buf_command);
@@ -275,15 +254,16 @@ int main(void)
 					  print_flag = false;
 				  }
 			  }
-			  else
+			  else																	// Print "DONE" if all file was read
 			  {
 				  memset(rx_buf_command, 0, sizeof(rx_buf_command));
 				  memset(msg_buf, 0, sizeof(msg_buf));
 				  strcat(msg_buf, "\n\r DONE \n\r");
 				  HAL_UART_Transmit_IT(&huart3, msg_buf, sizeof(msg_buf));
 
-				  flag_received_command = false;
+				  flag_received_command = false;									// Out
 				  flag_firt_command = 1;
+				  print_flag = true;
 			  }
 		  }
 
