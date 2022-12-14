@@ -59,8 +59,10 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define TEST_OUTPUT_Pin GPIO_PIN_2
-#define TEST_OUTPUT_GPIO_Port GPIOE
+#define TEST_OUTPUT_1_Pin GPIO_PIN_2
+#define TEST_OUTPUT_1_GPIO_Port GPIOE
+#define TEST_OUTPUT_2_Pin GPIO_PIN_3
+#define TEST_OUTPUT_2_GPIO_Port GPIOE
 #define PC14_OSC32_IN_Pin GPIO_PIN_14
 #define PC14_OSC32_IN_GPIO_Port GPIOC
 #define PC15_OSC32_OUT_Pin GPIO_PIN_15

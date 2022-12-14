@@ -23,7 +23,8 @@ extern TIM_HandleTypeDef htim3;
 extern TIM_HandleTypeDef htim4;
 extern TIM_HandleTypeDef htim5;
 
-extern bool flag_received_command;
+
+
 extern uint8_t frame_start_flag;
 
 char USER_Path[4];
@@ -51,6 +52,11 @@ int how_many_leds_up_part = 41;
 int how_many_leds_down_part = 42;
 
 extern bool interrupt_animation_flag;
+
+extern TIM_HandleTypeDef htim14;			// Для формування 25 Hz
+extern uint8_t interrupt_flag;			// ставиться в htim13
+extern TIM_HandleTypeDef htim13;
+
 
 void make_delay(int delay);
 
@@ -428,21 +434,30 @@ void SD_Error_Handler(void)
 	LED_Red_ON;
 	//while(1);
 }
-// ------------------------------------------------------------------------------------------------
-/*
-	Open file, calculate how many frames in selected file and show all frames.
- */
-uint8_t open_bin_file(char* name)
+// -----------------------------------------------------------------------------------------------
+void test_function_generate_delay(void)
 {
-	int i = 0;
+	if(interrupt_flag == 1)
+	{
+		HAL_GPIO_TogglePin(GPIOE, TEST_OUTPUT_1_Pin);
+		interrupt_flag = 0;
+	}
+}
+// -----------------------------------------------------------------------------------------------
 
+
+
+void test_double_buffer(char* name)
+{
 	uint16_t vTemp = 0;
 	uint32_t vIndex = 0;
 	uint32_t vFileSize = 0;
 	uint32_t vBytesReadCounter;
 
-	uint8_t frame_buffer[949] = {0};
-	int size_buf_for_read = sizeof(frame_buffer);
+	uint8_t frame_buffer_A[949] = {0};
+	uint8_t frame_buffer_B[949] = {0};
+
+	int size_buf_for_read = sizeof(frame_buffer_A);
 
 	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
 	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2);
@@ -454,6 +469,7 @@ uint8_t open_bin_file(char* name)
 	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4);
 	HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_2);
 	HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_3);
+
 
 	if(f_mount(&SDFatFs, (TCHAR const*)USER_Path, 0))
 	{
@@ -467,132 +483,388 @@ uint8_t open_bin_file(char* name)
 		}
 		else
 		{
-			//HAL_TIM_Base_Start_IT(&htim5);
+			HAL_TIM_Base_Start_IT(&htim14);									// Для формування 25 Hz
+
 			vFileSize = MyFile.obj.objsize;									// Get size of current file
 			int how_many_frames = vFileSize/frame_size;						// How many frames into current file
 
-			for(int h = 0; h < how_many_frames; h++)
-			{
-				HAL_GPIO_TogglePin(GPIOE, TEST_OUTPUT_Pin);					// For measure
 
-				if(interrupt_animation_flag == true)						// If was sent "STOP animation" command. 'z' key
+				for(int h = 0; h < how_many_frames; h++)
 				{
-					interrupt_animation_flag = false;
-					stop_light_all_turn_off();
-					turn_off_left_and_right_dtript();
-					HAL_Delay(100);
+					HAL_GPIO_TogglePin(GPIOE, TEST_OUTPUT_1_Pin);
 
-					break;
-				}
+					memset(frame_buffer_A, 0, sizeof(frame_buffer_A));
 
-				if(h > 316)
-				{
-					int ggg = 99;
-				}
+					f_lseek(&MyFile, h + ((frame_size - 1)*h));						// shift on one frame
+					f_read(&MyFile, aBuffer, vTemp, (UINT *)&vBytesReadCounter);
+					f_gets(frame_buffer_A, size_buf_for_read, &MyFile);     			// Read one fraime into buffer
 
-//				HAL_TIM_Base_Start_IT(&htim5);
-			//	HAL_GPIO_WritePin(GPIOE, TEST_OUTPUT_Pin, GPIO_PIN_SET);
 
-				memset(frame_buffer, 0, sizeof(frame_buffer));
-
-				f_lseek(&MyFile, h + ((frame_size - 1)*h));						// shift on one frame
-				f_read(&MyFile, aBuffer, vTemp, (UINT *)&vBytesReadCounter);
-				f_gets(frame_buffer, size_buf_for_read, &MyFile);     			// Read one fraime into buffer
-
-				// SET Left RGBW LEDs
-				uint16_t number_of_rgbw_leds = 0;
-				int k = 0;
-				for(k = end_left_led; k >= strat_left_led; k--)		// 84 LEDs
-				{
-
-#if  OLD_VER_LEFT
-					if(k%4 == 0)
+					// SET Left RGBW LEDs
+					uint16_t number_of_rgbw_leds = 0;
+					int k = 0;
+					for(k = end_left_led; k >= strat_left_led; k--)		// 84 LEDs
 					{
-						set_left_one_rgbw_led(number_of_rgbw_leds, frame_buffer[k], frame_buffer[k+1], frame_buffer[k+2], frame_buffer[k+3]);
-						number_of_rgbw_leds++;
-					}
-#else
-					if(k%4 == 0)
-					{
-						if(end_left_led <= midle_left_led)
+						if(k%4 == 0)
 						{
-							set_left_one_rgbw_led(how_many_leds_down_part - number_of_rgbw_leds, frame_buffer[k], frame_buffer[k+1], frame_buffer[k+2], frame_buffer[k+3]);
+							set_left_one_rgbw_led(number_of_rgbw_leds, frame_buffer_A[k], frame_buffer_A[k+1], frame_buffer_A[k+2], frame_buffer_A[k+3]);
 							number_of_rgbw_leds++;
 						}
-						else
-						{
-							set_left_one_rgbw_led(how_many_leds_up_part - number_of_rgbw_leds, frame_buffer[k], frame_buffer[k+1], frame_buffer[k+2], frame_buffer[k+3]);
-							number_of_rgbw_leds++;
-
-						}
 					}
-#endif
-				}
-				// SET Right RGBW LEDs
-				number_of_rgbw_leds = 0;
+					// SET Right RGBW LEDs
+					number_of_rgbw_leds = 0;
 
-				for(k = end_ritht_led; k >= strat_right_led; k--)
-				{
-#if OLD_VER_RIGHT
-					if(k%4 == 0)
+					for(k = end_ritht_led; k >= strat_right_led; k--)
 					{
-						set_right_one_rgbw_led(number_of_rgbw_leds, frame_buffer[k], frame_buffer[k+1], frame_buffer[k+2], frame_buffer[k+3]);
-						number_of_rgbw_leds++;
-					}
-
-#else
-					if(k%4 == 0)
-					{
-						if(end_ritht_led <= midle_right_led)
+						if(k%4 == 0)
 						{
-							set_right_one_rgbw_led(42 - number_of_rgbw_leds, frame_buffer[k], frame_buffer[k+1], frame_buffer[k+2], frame_buffer[k+3]);
+							set_right_one_rgbw_led(number_of_rgbw_leds, frame_buffer_A[k], frame_buffer_A[k+1], frame_buffer_A[k+2], frame_buffer_A[k+3]);
 							number_of_rgbw_leds++;
 						}
-						else
-						{
-							set_right_one_rgbw_led(41 - number_of_rgbw_leds, frame_buffer[k], frame_buffer[k+1], frame_buffer[k+2], frame_buffer[k+3]);
-							number_of_rgbw_leds++;
-
-						}
 					}
-#endif
-				}
 
-				make_delay(267);
+					// SET RED LEDs
+					set_duty_cycle_stop_left_5(frame_buffer_A[start_evenled + 16 ]);
+					set_duty_cycle_stop_left_4(frame_buffer_A[start_evenled + 12 ]);
+					set_duty_cycle_stop_left_3(frame_buffer_A[start_evenled + 8 ]);
+					set_duty_cycle_stop_left_2(frame_buffer_A[start_evenled + 4 ]);
+					set_duty_cycle_stop_left_1(frame_buffer_A[start_evenled]);
 
-				// SET RED LEDs
-				set_duty_cycle_stop_left_5(frame_buffer[start_evenled + 16 ]);
-				set_duty_cycle_stop_left_4(frame_buffer[start_evenled + 12 ]);
-				set_duty_cycle_stop_left_3(frame_buffer[start_evenled + 8 ]);
-				set_duty_cycle_stop_left_2(frame_buffer[start_evenled + 4 ]);
-				set_duty_cycle_stop_left_1(frame_buffer[start_evenled]);
+					set_duty_cycle_stop_ritht_1(frame_buffer_A[start_evenled + 20 ]);
+					set_duty_cycle_stop_ritht_2(frame_buffer_A[start_evenled + 24 ]);
+					set_duty_cycle_stop_ritht_3(frame_buffer_A[start_evenled + 28 ]);
+					set_duty_cycle_stop_ritht_4(frame_buffer_A[start_evenled + 32 ]);
+					set_duty_cycle_stop_ritht_5(frame_buffer_A[start_evenled + 36 ]);
 
-				set_duty_cycle_stop_ritht_1(frame_buffer[start_evenled + 20 ]);
-				set_duty_cycle_stop_ritht_2(frame_buffer[start_evenled + 24 ]);
-				set_duty_cycle_stop_ritht_3(frame_buffer[start_evenled + 28 ]);
-				set_duty_cycle_stop_ritht_4(frame_buffer[start_evenled + 32 ]);
-				set_duty_cycle_stop_ritht_5(frame_buffer[start_evenled + 36 ]);
+					while (!ARGB_Show_left());  		// Update
+					while (!ARGB_Show_right());  		// Update
 
+					frame_start_flag = 0;
 
-				while (!ARGB_Show_left());  		// Update
-				while (!ARGB_Show_right());  		// Update
+					//flip_flag_interrupt = 0;
 
 
-				//HAL_GPIO_TogglePin(GPIOE, TEST_OUTPUT_Pin);
-				//HAL_GPIO_WritePin(GPIOE, TEST_OUTPUT_Pin, GPIO_PIN_RESET);   // For measure
+					//HAL_GPIO_TogglePin(GPIOE, TEST_OUTPUT_Pin);
+					//HAL_GPIO_WritePin(GPIOE, TEST_OUTPUT_Pin, GPIO_PIN_RESET);   // For measure
 
-				frame_start_flag = 0;
 
-				//while (!ARGB_Show_right());  		// Update
 
-				//HAL_GPIO_WritePin(GPIOE, TEST_OUTPUT_Pin, GPIO_PIN_RESET);
-				// HAL_GPIO_WritePin(GPIOE, TEST_OUTPUT_Pin, GPIO_PIN_RESET);   // For measure
-				// HAL_Delay(27);
+					//while (!ARGB_Show_right());  		// Update
+
+					//HAL_GPIO_WritePin(GPIOE, TEST_OUTPUT_Pin, GPIO_PIN_RESET);
+					// HAL_GPIO_WritePin(GPIOE, TEST_OUTPUT_Pin, GPIO_PIN_RESET);   // For measure
+					// HAL_Delay(27);
 			}
-			f_close(&MyFile);
+		f_close(&MyFile);
+
 		}
 	}
 	return 0;
+}
+// ------------------------------------------------------------------------------------------------
+/*
+	Open file, calculate how many frames in selected file and show all frames.
+ */
+uint8_t open_bin_file(char* name)
+{
+	int i = 0;
+
+	uint16_t vTemp = 0;
+	uint32_t vIndex = 0;
+	static uint32_t vFileSize = 0;
+	uint32_t vBytesReadCounter;
+
+	uint8_t frame_buffer[949] = {0};
+	int size_buf_for_read = sizeof(frame_buffer);
+	static int how_many_frames = 0;
+
+	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
+	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2);
+	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3);
+	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_4);
+	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
+	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
+	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_3);
+	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4);
+	HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_2);
+	HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_3);
+
+
+	///////////////////////////////////////////////////
+
+	// 1. Відкрити файл
+	// 2. ПОрахувати кількість фреймів
+	// 3. Включити таймер
+
+	// 		Прочитати один фрейм
+	// 		Якщо є 0.04 Hz
+	// 			Вигрузити (включити леди)
+	// 			Якщо фрейм останній то закрити файл
+	// 		Якщо нема
+	//			вийти
+
+
+
+	static int open_file_flag = 0;
+
+	if(open_file_flag == 0)		// if file wasn't opened before
+	{
+		if(f_mount(&SDFatFs, (TCHAR const*)USER_Path, 0))
+		{
+			SD_Error_Handler();
+		}
+		else
+		{
+			if(f_open(&MyFile, name, FA_READ))
+			{
+				SD_Error_Handler();
+			}
+			else
+			{
+				vFileSize = MyFile.obj.objsize;									// Get size of current file
+				how_many_frames = vFileSize/frame_size;							// How many frames into current file
+
+				open_file_flag = 1;
+			}
+		}
+	}
+	else
+	{
+		static int h = 0;
+
+		if(h >= how_many_frames)
+		{
+			f_close(&MyFile);
+			open_file_flag = 0;
+			h = 0;
+
+			return 1;
+		}
+
+		for( h; ((h < how_many_frames) && (interrupt_flag == 1)); h++)
+		{
+			HAL_GPIO_TogglePin(GPIOE, TEST_OUTPUT_1_Pin);					// For measure
+
+			if(interrupt_animation_flag == true)						// If was sent "STOP animation" command. 'z' key
+			{
+				interrupt_animation_flag = false;
+				stop_light_all_turn_off();
+				turn_off_left_and_right_dtript();
+				HAL_Delay(100);
+
+				break;
+			}
+
+			memset(frame_buffer, 0, sizeof(frame_buffer));
+
+			f_lseek(&MyFile, h + ((frame_size - 1)*h));						// shift on one frame
+			f_read(&MyFile, aBuffer, vTemp, (UINT *)&vBytesReadCounter);
+			f_gets(frame_buffer, size_buf_for_read, &MyFile);     			// Read one fraime into buffer
+
+			if((h > 316) && (h < 330))			// Place in 7.bin file where somsing wrong
+			{
+				int ggg = 99;
+			}
+
+			// SET Left RGBW LEDs
+			uint16_t number_of_rgbw_leds = 0;
+			int k = 0;
+			for(k = end_left_led; k >= strat_left_led; k--)		// 84 LEDs
+			{
+				if(k%4 == 0)
+				{
+					set_left_one_rgbw_led(number_of_rgbw_leds, frame_buffer[k], frame_buffer[k+1], frame_buffer[k+2], frame_buffer[k+3]);
+					number_of_rgbw_leds++;
+				}
+			}
+
+			// SET Right RGBW LEDs
+			number_of_rgbw_leds = 0;
+			for(k = end_ritht_led; k >= strat_right_led; k--)
+			{
+				if(k%4 == 0)
+				{
+					set_right_one_rgbw_led(number_of_rgbw_leds, frame_buffer[k], frame_buffer[k+1], frame_buffer[k+2], frame_buffer[k+3]);
+					number_of_rgbw_leds++;
+				}
+			}
+
+			// make_delay(267);
+
+			// SET RED LEDs
+			set_duty_cycle_stop_left_5(frame_buffer[start_evenled + 16 ]);
+			set_duty_cycle_stop_left_4(frame_buffer[start_evenled + 12 ]);
+			set_duty_cycle_stop_left_3(frame_buffer[start_evenled + 8 ]);
+			set_duty_cycle_stop_left_2(frame_buffer[start_evenled + 4 ]);
+			set_duty_cycle_stop_left_1(frame_buffer[start_evenled]);
+
+			set_duty_cycle_stop_ritht_1(frame_buffer[start_evenled + 20 ]);
+			set_duty_cycle_stop_ritht_2(frame_buffer[start_evenled + 24 ]);
+			set_duty_cycle_stop_ritht_3(frame_buffer[start_evenled + 28 ]);
+			set_duty_cycle_stop_ritht_4(frame_buffer[start_evenled + 32 ]);
+			set_duty_cycle_stop_ritht_5(frame_buffer[start_evenled + 36 ]);
+
+			while (!ARGB_Show_left());  		// Update
+			while (!ARGB_Show_right());  		// Update
+
+			interrupt_flag = 0;				// Tim 13
+		}
+		return 0;
+	}
+
+
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//	int i = 0;
+//
+//	uint16_t vTemp = 0;
+//	uint32_t vIndex = 0;
+//	uint32_t vFileSize = 0;
+//	uint32_t vBytesReadCounter;
+//
+//	uint8_t frame_buffer[949] = {0};
+//	int size_buf_for_read = sizeof(frame_buffer);
+//
+//	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
+//	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2);
+//	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3);
+//	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_4);
+//	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
+//	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
+//	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_3);
+//	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4);
+//	HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_2);
+//	HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_3);
+//
+//
+//	///////////////////////////////////////////////////
+//
+//	// 1. Відкрити файл
+//	// 2. ПОрахувати кількість фреймів
+//	// 3. Включити таймер
+//
+//	// 		Прочитати один фрейм
+//	// 		Якщо є 0.04 Hz
+//	// 			Вигрузити (включити леди)
+//	// 			Якщо фрейм останній то закрити файл
+//	// 		Якщо нема
+//	//			вийти
+//
+//
+//
+//
+//	if(f_mount(&SDFatFs, (TCHAR const*)USER_Path, 0))
+//	{
+//		SD_Error_Handler();
+//	}
+//	else
+//	{
+//		if(f_open(&MyFile, name, FA_READ))
+//		{
+//			SD_Error_Handler();
+//		}
+//		else
+//		{
+//			//HAL_TIM_Base_Start_IT(&htim5);
+//			vFileSize = MyFile.obj.objsize;									// Get size of current file
+//			int how_many_frames = vFileSize/frame_size;						// How many frames into current file
+//
+////			if(interrupt_flag == 1)							// НЕРОБИТЬ ЗАТРИМКА <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+////			{
+//			static int h = 0;
+//
+////				do{
+//
+//				for( int h = 0; h < how_many_frames; h++)
+//				{
+//
+////				while((interrupt_flag == 1) && (h < how_many_frames))
+//
+//
+//					HAL_GPIO_TogglePin(GPIOE, TEST_OUTPUT_1_Pin);					// For measure
+//
+//					if(interrupt_animation_flag == true)						// If was sent "STOP animation" command. 'z' key
+//					{
+//						interrupt_animation_flag = false;
+//						stop_light_all_turn_off();
+//						turn_off_left_and_right_dtript();
+//						HAL_Delay(100);
+//
+//						break;
+//					}
+//
+//					memset(frame_buffer, 0, sizeof(frame_buffer));
+//
+//					f_lseek(&MyFile, h + ((frame_size - 1)*h));						// shift on one frame
+//					f_read(&MyFile, aBuffer, vTemp, (UINT *)&vBytesReadCounter);
+//					f_gets(frame_buffer, size_buf_for_read, &MyFile);     			// Read one fraime into buffer
+//
+//					if((h > 316) && (h < 330))			// Place in 7.bin file where somsing wrong
+//					{
+//						int ggg = 99;
+//
+//					}
+//
+//					// SET Left RGBW LEDs
+//					uint16_t number_of_rgbw_leds = 0;
+//					int k = 0;
+//					for(k = end_left_led; k >= strat_left_led; k--)		// 84 LEDs
+//					{
+//						if(k%4 == 0)
+//						{
+//							set_left_one_rgbw_led(number_of_rgbw_leds, frame_buffer[k], frame_buffer[k+1], frame_buffer[k+2], frame_buffer[k+3]);
+//							number_of_rgbw_leds++;
+//						}
+//					}
+//
+//					// SET Right RGBW LEDs
+//					number_of_rgbw_leds = 0;
+//					for(k = end_ritht_led; k >= strat_right_led; k--)
+//					{
+//						if(k%4 == 0)
+//						{
+//						set_right_one_rgbw_led(number_of_rgbw_leds, frame_buffer[k], frame_buffer[k+1], frame_buffer[k+2], frame_buffer[k+3]);
+//						number_of_rgbw_leds++;
+//					}
+//
+//					}
+//
+//					make_delay(267);
+//
+//					// SET RED LEDs
+//					set_duty_cycle_stop_left_5(frame_buffer[start_evenled + 16 ]);
+//					set_duty_cycle_stop_left_4(frame_buffer[start_evenled + 12 ]);
+//					set_duty_cycle_stop_left_3(frame_buffer[start_evenled + 8 ]);
+//					set_duty_cycle_stop_left_2(frame_buffer[start_evenled + 4 ]);
+//					set_duty_cycle_stop_left_1(frame_buffer[start_evenled]);
+//
+//					set_duty_cycle_stop_ritht_1(frame_buffer[start_evenled + 20 ]);
+//					set_duty_cycle_stop_ritht_2(frame_buffer[start_evenled + 24 ]);
+//					set_duty_cycle_stop_ritht_3(frame_buffer[start_evenled + 28 ]);
+//					set_duty_cycle_stop_ritht_4(frame_buffer[start_evenled + 32 ]);
+//					set_duty_cycle_stop_ritht_5(frame_buffer[start_evenled + 36 ]);
+//
+//					while (!ARGB_Show_left());  		// Update
+//					while (!ARGB_Show_right());  		// Update
+//
+//					interrupt_flag = 0;			// Tim 13
+//
+//					//HAL_TIM_Base_Start_IT(&htim13);
+////					h++;
+////					if(h == how_many_frames)
+////					{
+////						h = 0;
+////					}
+////				}while((interrupt_flag == 1) && (h < how_many_frames));
+//
+//			}
+//
+//		}
+//	}
+//	f_close(&MyFile);
+//	return 0;
+
 }
 
 // -----------------------------------------------------------------------------------------------------------
@@ -640,7 +912,6 @@ uint8_t open_my_bin_file(char* name)
 		}
 		else
 		{
-
 			memset(frame_buffer, 0, sizeof(frame_buffer));
 
 			f_lseek(&MyFile, 0);			// shift on one frame

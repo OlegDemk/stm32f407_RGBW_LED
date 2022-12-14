@@ -66,6 +66,11 @@ char rx_buf_command[10] = {0};
 uint8_t count_chars = 0;
 ////////////////////////////////////////////////////////////////////////////////
 
+
+// Generate 25 Hz //////////////////////////////////////////////////////////////
+uint8_t interrupt_flag = 0;
+////////////////////////////////////////////////////////////////////////////////
+
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -88,6 +93,7 @@ TIM_HandleTypeDef htim3;
 TIM_HandleTypeDef htim4;
 TIM_HandleTypeDef htim5;
 TIM_HandleTypeDef htim8;
+TIM_HandleTypeDef htim13;
 DMA_HandleTypeDef hdma_tim8_ch3;
 DMA_HandleTypeDef hdma_tim8_ch4_trig_com;
 
@@ -108,10 +114,17 @@ static void MX_TIM3_Init(void);
 static void MX_TIM4_Init(void);
 static void MX_TIM8_Init(void);
 static void MX_TIM5_Init(void);
+static void MX_TIM13_Init(void);
 void MX_USB_HOST_Process(void);
 
 /* USER CODE BEGIN PFP */
+void init_tim_13(int msec)
+{
+	msec = msec*10;
+	__HAL_TIM_SET_AUTORELOAD(&htim13, msec-1);
 
+	HAL_TIM_Base_Start_IT(&htim13);
+}
 
 // uint8_t tim_increment = 0;
 /* USER CODE END PFP */
@@ -159,6 +172,7 @@ int main(void)
   MX_TIM4_Init();
   MX_TIM8_Init();
   MX_TIM5_Init();
+  MX_TIM13_Init();
   /* USER CODE BEGIN 2 */
 
   HAL_Delay(100);
@@ -199,6 +213,13 @@ int main(void)
   HAL_TIM_Base_Start_IT(&htim5);       										//використати цей таймер для синхронізації
 
 
+  init_tim_13(40);				// Set value in milisecond
+  // HAL_TIM_Base_Start_IT(&htim11);				// Для формування 25 Hz
+
+
+
+
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -222,29 +243,54 @@ int main(void)
 //	  test_function_2(400);			// 25Hz
 //	  HAL_GPIO_TogglePin(GPIOE, TEST_OUTPUT_Pin);
 
+	  //test_double_buffer();
+
+
+	  //test_function_generate_delay();
+
+
 	  if(flag_received_command == true)
 	  {
-		  char buf_str[10] = {0};
+		  static char buf_str[10] = {0};
+		  static int flag_firt_command = 1;
 
-		  //strcpy(buf_str, command_from_uart);
-//		  sprintf(buf_str, "%d", command_from_uart);
-		  memset(msg_buf, 0, sizeof(msg_buf));
-		  strcat(msg_buf, rx_buf_command);
-		  strcat(msg_buf, ": working...  \n\r");
-		  HAL_UART_Transmit_IT(&huart3, msg_buf, sizeof(msg_buf));
+		  if(flag_firt_command == 1)
+		  {
+			  strcat(buf_str, rx_buf_command);
+			  strcat(buf_str, ".bin");
+			  flag_firt_command = 0;
+		  }
+		  else
+		  {
+			  if(open_bin_file(buf_str) == 0)
+			  {
+				  static bool print_flag = true;
+				  if(print_flag == true)
+				  {
+					  memset(msg_buf, 0, sizeof(msg_buf));
+					  strcat(msg_buf, rx_buf_command);
+					  strcat(msg_buf, ": working...  \n\r");
+					  HAL_UART_Transmit_IT(&huart3, msg_buf, sizeof(msg_buf));
 
-		  //HAL_Delay(1000);
+					  print_flag = false;
+				  }
+			  }
+			  else
+			  {
+				  memset(rx_buf_command, 0, sizeof(rx_buf_command));
+				  memset(msg_buf, 0, sizeof(msg_buf));
+				  strcat(msg_buf, "\n\r DONE \n\r");
+				  HAL_UART_Transmit_IT(&huart3, msg_buf, sizeof(msg_buf));
 
-		  strcat(buf_str, rx_buf_command);
-		  strcat(buf_str, ".bin");
-		  open_bin_file(buf_str);
+				  flag_received_command = false;
+				  flag_firt_command = 1;
+			  }
+		  }
 
-		  flag_received_command = false;
-		  memset(rx_buf_command, 0, sizeof(rx_buf_command));
 
-		  memset(msg_buf, 0, sizeof(msg_buf));
-		  strcat(msg_buf, "\n\r DONE \n\r");
-		  HAL_UART_Transmit_IT(&huart3, msg_buf, sizeof(msg_buf));
+		  //test_double_buffer(buf_str);
+
+
 
 
 
@@ -771,6 +817,37 @@ static void MX_TIM8_Init(void)
 }
 
 /**
+  * @brief TIM13 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM13_Init(void)
+{
+
+  /* USER CODE BEGIN TIM13_Init 0 */
+
+  /* USER CODE END TIM13_Init 0 */
+
+  /* USER CODE BEGIN TIM13_Init 1 */
+
+  /* USER CODE END TIM13_Init 1 */
+  htim13.Instance = TIM13;
+  htim13.Init.Prescaler = 8400-1;
+  htim13.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim13.Init.Period = 50000;
+  htim13.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim13.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim13) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM13_Init 2 */
+
+  /* USER CODE END TIM13_Init 2 */
+
+}
+
+/**
   * @brief USART3 Initialization Function
   * @param None
   * @retval None
@@ -840,7 +917,7 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOD_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOE, TEST_OUTPUT_Pin|GPIO_PIN_3, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOE, TEST_OUTPUT_1_Pin|TEST_OUTPUT_2_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(OTG_FS_PowerSwitchOn_GPIO_Port, OTG_FS_PowerSwitchOn_Pin, GPIO_PIN_SET);
@@ -852,19 +929,19 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOD, TEST_OUT_Pin|LD4_Pin|LD3_Pin|LD5_Pin
                           |LD6_Pin|Audio_RST_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pin : TEST_OUTPUT_Pin */
-  GPIO_InitStruct.Pin = TEST_OUTPUT_Pin;
+  /*Configure GPIO pin : TEST_OUTPUT_1_Pin */
+  GPIO_InitStruct.Pin = TEST_OUTPUT_1_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-  HAL_GPIO_Init(TEST_OUTPUT_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(TEST_OUTPUT_1_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : PE3 */
-  GPIO_InitStruct.Pin = GPIO_PIN_3;
+  /*Configure GPIO pin : TEST_OUTPUT_2_Pin */
+  GPIO_InitStruct.Pin = TEST_OUTPUT_2_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
+  HAL_GPIO_Init(TEST_OUTPUT_2_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : OTG_FS_PowerSwitchOn_Pin */
   GPIO_InitStruct.Pin = OTG_FS_PowerSwitchOn_Pin;
@@ -966,9 +1043,12 @@ static void MX_GPIO_Init(void)
 // ------------------------------------------------------------------------------------
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-
-
-
+	if(htim == &htim13)
+	{
+		HAL_GPIO_TogglePin(GPIOE, TEST_OUTPUT_2_Pin);
+		interrupt_flag = 1;
+		//HAL_TIM_Base_Stop_IT(&htim13);
+	}
 }
 // ------------------------------------------------------------------------------------
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
