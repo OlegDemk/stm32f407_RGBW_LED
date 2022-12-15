@@ -212,7 +212,7 @@ int main(void)
 
   HAL_TIM_Base_Start_IT(&htim5);       										//використати цей таймер для синхронізації
 
-  init_tim_13(40);				// Set value in milisecond
+  init_tim_13(33);				// Set value in milisecond
 
   /* USER CODE END 2 */
 

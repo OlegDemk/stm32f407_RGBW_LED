@@ -15,6 +15,6 @@
 ../Core/Src/microSD/sd_spi.c:440:6:test_function_generate_delay	8	static
 ../Core/Src/microSD/sd_spi.c:452:6:test_double_buffer	1976	static
 ../Core/Src/microSD/sd_spi.c:570:9:open_bin_file	1016	static
-../Core/Src/microSD/sd_spi.c:719:6:make_delay	16	static
-../Core/Src/microSD/sd_spi.c:725:9:open_my_bin_file	1016	static
-../Core/Src/microSD/sd_spi.c:824:6:create_example_bin	992	static
+../Core/Src/microSD/sd_spi.c:721:6:make_delay	16	static
+../Core/Src/microSD/sd_spi.c:727:9:open_my_bin_file	1016	static
+../Core/Src/microSD/sd_spi.c:826:6:create_example_bin	992	static

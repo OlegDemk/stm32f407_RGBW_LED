@@ -39,11 +39,11 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  17 .debug_macro  00027721  00000000  00000000  0005a8d8  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_line   000244c8  00000000  00000000  00081ff9  2**0
+ 18 .debug_line   000244c7  00000000  00000000  00081ff9  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .debug_str    000d5826  00000000  00000000  000a64c1  2**0
+ 19 .debug_str    000d5826  00000000  00000000  000a64c0  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 20 .comment      00000050  00000000  00000000  0017bce7  2**0
+ 20 .comment      00000050  00000000  00000000  0017bce6  2**0
                   CONTENTS, READONLY
  21 .debug_frame  000075b8  00000000  00000000  0017bd38  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
@@ -4969,8 +4969,8 @@ int main(void)
  800276a:	4848      	ldr	r0, [pc, #288]	; (800288c <main+0x200>)
  800276c:	f005 faee 	bl	8007d4c <HAL_TIM_Base_Start_IT>
 
-  init_tim_13(40);				// Set value in milisecond
- 8002770:	2028      	movs	r0, #40	; 0x28
+  init_tim_13(33);				// Set value in milisecond
+ 8002770:	2021      	movs	r0, #33	; 0x21
  8002772:	f7ff ff6d 	bl	8002650 <init_tim_13>
   while (1)
   {
@@ -9481,43 +9481,43 @@ uint8_t open_bin_file(char* name)
 
 	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
  8004230:	2100      	movs	r1, #0
- 8004232:	4881      	ldr	r0, [pc, #516]	; (8004438 <open_bin_file+0x248>)
+ 8004232:	487f      	ldr	r0, [pc, #508]	; (8004430 <open_bin_file+0x240>)
  8004234:	f003 fe4a 	bl	8007ecc <HAL_TIM_PWM_Start>
 	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2);
  8004238:	2104      	movs	r1, #4
- 800423a:	487f      	ldr	r0, [pc, #508]	; (8004438 <open_bin_file+0x248>)
+ 800423a:	487d      	ldr	r0, [pc, #500]	; (8004430 <open_bin_file+0x240>)
  800423c:	f003 fe46 	bl	8007ecc <HAL_TIM_PWM_Start>
 	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3);
  8004240:	2108      	movs	r1, #8
- 8004242:	487d      	ldr	r0, [pc, #500]	; (8004438 <open_bin_file+0x248>)
+ 8004242:	487b      	ldr	r0, [pc, #492]	; (8004430 <open_bin_file+0x240>)
  8004244:	f003 fe42 	bl	8007ecc <HAL_TIM_PWM_Start>
 	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_4);
  8004248:	210c      	movs	r1, #12
- 800424a:	487b      	ldr	r0, [pc, #492]	; (8004438 <open_bin_file+0x248>)
+ 800424a:	4879      	ldr	r0, [pc, #484]	; (8004430 <open_bin_file+0x240>)
  800424c:	f003 fe3e 	bl	8007ecc <HAL_TIM_PWM_Start>
 	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
  8004250:	2100      	movs	r1, #0
- 8004252:	487a      	ldr	r0, [pc, #488]	; (800443c <open_bin_file+0x24c>)
+ 8004252:	4878      	ldr	r0, [pc, #480]	; (8004434 <open_bin_file+0x244>)
  8004254:	f003 fe3a 	bl	8007ecc <HAL_TIM_PWM_Start>
 	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
  8004258:	2104      	movs	r1, #4
- 800425a:	4878      	ldr	r0, [pc, #480]	; (800443c <open_bin_file+0x24c>)
+ 800425a:	4876      	ldr	r0, [pc, #472]	; (8004434 <open_bin_file+0x244>)
  800425c:	f003 fe36 	bl	8007ecc <HAL_TIM_PWM_Start>
 	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_3);
  8004260:	2108      	movs	r1, #8
- 8004262:	4876      	ldr	r0, [pc, #472]	; (800443c <open_bin_file+0x24c>)
+ 8004262:	4874      	ldr	r0, [pc, #464]	; (8004434 <open_bin_file+0x244>)
  8004264:	f003 fe32 	bl	8007ecc <HAL_TIM_PWM_Start>
 	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4);
  8004268:	210c      	movs	r1, #12
- 800426a:	4874      	ldr	r0, [pc, #464]	; (800443c <open_bin_file+0x24c>)
+ 800426a:	4872      	ldr	r0, [pc, #456]	; (8004434 <open_bin_file+0x244>)
  800426c:	f003 fe2e 	bl	8007ecc <HAL_TIM_PWM_Start>
 	HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_2);
  8004270:	2104      	movs	r1, #4
- 8004272:	4873      	ldr	r0, [pc, #460]	; (8004440 <open_bin_file+0x250>)
+ 8004272:	4871      	ldr	r0, [pc, #452]	; (8004438 <open_bin_file+0x248>)
  8004274:	f003 fe2a 	bl	8007ecc <HAL_TIM_PWM_Start>
 	HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_3);
  8004278:	2108      	movs	r1, #8
- 800427a:	4871      	ldr	r0, [pc, #452]	; (8004440 <open_bin_file+0x250>)
+ 800427a:	486f      	ldr	r0, [pc, #444]	; (8004438 <open_bin_file+0x248>)
  800427c:	f003 fe26 	bl	8007ecc <HAL_TIM_PWM_Start>
 
 
@@ -9525,7 +9525,7 @@ uint8_t open_bin_file(char* name)
 	static bool open_file_flag = true;
 
 	if(open_file_flag == false)		// if file wasn't opened before
- 8004280:	4b70      	ldr	r3, [pc, #448]	; (8004444 <open_bin_file+0x254>)
+ 8004280:	4b6e      	ldr	r3, [pc, #440]	; (800443c <open_bin_file+0x24c>)
  8004282:	781b      	ldrb	r3, [r3, #0]
  8004284:	f083 0301 	eor.w	r3, r3, #1
  8004288:	b2db      	uxtb	r3, r3
@@ -9534,8 +9534,8 @@ uint8_t open_bin_file(char* name)
 	{
 		if(f_mount(&SDFatFs, (TCHAR const*)USER_Path, 0))
  800428e:	2200      	movs	r2, #0
- 8004290:	496d      	ldr	r1, [pc, #436]	; (8004448 <open_bin_file+0x258>)
- 8004292:	486e      	ldr	r0, [pc, #440]	; (800444c <open_bin_file+0x25c>)
+ 8004290:	496b      	ldr	r1, [pc, #428]	; (8004440 <open_bin_file+0x250>)
+ 8004292:	486c      	ldr	r0, [pc, #432]	; (8004444 <open_bin_file+0x254>)
  8004294:	f00b fbb2 	bl	800f9fc <f_mount>
  8004298:	4603      	mov	r3, r0
  800429a:	2b00      	cmp	r3, #0
@@ -9543,7 +9543,7 @@ uint8_t open_bin_file(char* name)
 		{
 			SD_Error_Handler();
  800429e:	f7ff ff9b 	bl	80041d8 <SD_Error_Handler>
- 80042a2:	e1b7      	b.n	8004614 <open_bin_file+0x424>
+ 80042a2:	e1b5      	b.n	8004610 <open_bin_file+0x420>
 		}
 		else
 		{
@@ -9552,7 +9552,7 @@ uint8_t open_bin_file(char* name)
  80042a8:	f5a3 7377 	sub.w	r3, r3, #988	; 0x3dc
  80042ac:	2201      	movs	r2, #1
  80042ae:	6819      	ldr	r1, [r3, #0]
- 80042b0:	4867      	ldr	r0, [pc, #412]	; (8004450 <open_bin_file+0x260>)
+ 80042b0:	4865      	ldr	r0, [pc, #404]	; (8004448 <open_bin_file+0x258>)
  80042b2:	f00b fbe9 	bl	800fa88 <f_open>
  80042b6:	4603      	mov	r3, r0
  80042b8:	2b00      	cmp	r3, #0
@@ -9560,417 +9560,418 @@ uint8_t open_bin_file(char* name)
 			{
 				SD_Error_Handler();
  80042bc:	f7ff ff8c 	bl	80041d8 <SD_Error_Handler>
- 80042c0:	e1a8      	b.n	8004614 <open_bin_file+0x424>
+ 80042c0:	e1a6      	b.n	8004610 <open_bin_file+0x420>
 			}
 			else
 			{
 				vFileSize = MyFile.obj.objsize;									// Get size of current file
- 80042c2:	4b63      	ldr	r3, [pc, #396]	; (8004450 <open_bin_file+0x260>)
+ 80042c2:	4b61      	ldr	r3, [pc, #388]	; (8004448 <open_bin_file+0x258>)
  80042c4:	68db      	ldr	r3, [r3, #12]
- 80042c6:	4a63      	ldr	r2, [pc, #396]	; (8004454 <open_bin_file+0x264>)
+ 80042c6:	4a61      	ldr	r2, [pc, #388]	; (800444c <open_bin_file+0x25c>)
  80042c8:	6013      	str	r3, [r2, #0]
 				how_many_frames = vFileSize/frame_size;							// How many frames into current file
- 80042ca:	4b62      	ldr	r3, [pc, #392]	; (8004454 <open_bin_file+0x264>)
+ 80042ca:	4b60      	ldr	r3, [pc, #384]	; (800444c <open_bin_file+0x25c>)
  80042cc:	681b      	ldr	r3, [r3, #0]
- 80042ce:	4a62      	ldr	r2, [pc, #392]	; (8004458 <open_bin_file+0x268>)
+ 80042ce:	4a60      	ldr	r2, [pc, #384]	; (8004450 <open_bin_file+0x260>)
  80042d0:	6812      	ldr	r2, [r2, #0]
  80042d2:	fbb3 f3f2 	udiv	r3, r3, r2
  80042d6:	461a      	mov	r2, r3
- 80042d8:	4b60      	ldr	r3, [pc, #384]	; (800445c <open_bin_file+0x26c>)
+ 80042d8:	4b5e      	ldr	r3, [pc, #376]	; (8004454 <open_bin_file+0x264>)
  80042da:	601a      	str	r2, [r3, #0]
 
 				open_file_flag = true;
- 80042dc:	4b59      	ldr	r3, [pc, #356]	; (8004444 <open_bin_file+0x254>)
+ 80042dc:	4b57      	ldr	r3, [pc, #348]	; (800443c <open_bin_file+0x24c>)
  80042de:	2201      	movs	r2, #1
  80042e0:	701a      	strb	r2, [r3, #0]
 				return 0;
  80042e2:	2300      	movs	r3, #0
- 80042e4:	e196      	b.n	8004614 <open_bin_file+0x424>
+ 80042e4:	e194      	b.n	8004610 <open_bin_file+0x420>
 	}
 	else
 	{
 		static int frame = 0;
 
 		if(frame >= how_many_frames)
- 80042e6:	4b5e      	ldr	r3, [pc, #376]	; (8004460 <open_bin_file+0x270>)
+ 80042e6:	4b5c      	ldr	r3, [pc, #368]	; (8004458 <open_bin_file+0x268>)
  80042e8:	681a      	ldr	r2, [r3, #0]
- 80042ea:	4b5c      	ldr	r3, [pc, #368]	; (800445c <open_bin_file+0x26c>)
+ 80042ea:	4b5a      	ldr	r3, [pc, #360]	; (8004454 <open_bin_file+0x264>)
  80042ec:	681b      	ldr	r3, [r3, #0]
  80042ee:	429a      	cmp	r2, r3
- 80042f0:	f2c0 8183 	blt.w	80045fa <open_bin_file+0x40a>
+ 80042f0:	f2c0 8181 	blt.w	80045f6 <open_bin_file+0x406>
 		{
 			f_close(&MyFile);
- 80042f4:	4856      	ldr	r0, [pc, #344]	; (8004450 <open_bin_file+0x260>)
+ 80042f4:	4854      	ldr	r0, [pc, #336]	; (8004448 <open_bin_file+0x258>)
  80042f6:	f00b ff70 	bl	80101da <f_close>
 			open_file_flag = false;
- 80042fa:	4b52      	ldr	r3, [pc, #328]	; (8004444 <open_bin_file+0x254>)
+ 80042fa:	4b50      	ldr	r3, [pc, #320]	; (800443c <open_bin_file+0x24c>)
  80042fc:	2200      	movs	r2, #0
  80042fe:	701a      	strb	r2, [r3, #0]
 			frame = 0;
- 8004300:	4b57      	ldr	r3, [pc, #348]	; (8004460 <open_bin_file+0x270>)
+ 8004300:	4b55      	ldr	r3, [pc, #340]	; (8004458 <open_bin_file+0x268>)
  8004302:	2200      	movs	r2, #0
  8004304:	601a      	str	r2, [r3, #0]
 
 			return 1;
  8004306:	2301      	movs	r3, #1
- 8004308:	e184      	b.n	8004614 <open_bin_file+0x424>
-		}
+ 8004308:	e182      	b.n	8004610 <open_bin_file+0x420>
 
 		for(frame; ((frame < how_many_frames) && (interrupt_flag == 1)); frame++)
 		{
-			HAL_GPIO_TogglePin(GPIOE, TEST_OUTPUT_1_Pin);					// For measure
- 800430a:	2104      	movs	r1, #4
- 800430c:	4855      	ldr	r0, [pc, #340]	; (8004464 <open_bin_file+0x274>)
- 800430e:	f001 f91a 	bl	8005546 <HAL_GPIO_TogglePin>
+			//HAL_GPIO_TogglePin(GPIOE, TEST_OUTPUT_1_Pin);					// For measure
 
 			if(interrupt_animation_flag == true)						// If was sent "STOP animation" command. 'z' key
- 8004312:	4b55      	ldr	r3, [pc, #340]	; (8004468 <open_bin_file+0x278>)
- 8004314:	781b      	ldrb	r3, [r3, #0]
- 8004316:	2b00      	cmp	r3, #0
- 8004318:	d00a      	beq.n	8004330 <open_bin_file+0x140>
+ 800430a:	4b54      	ldr	r3, [pc, #336]	; (800445c <open_bin_file+0x26c>)
+ 800430c:	781b      	ldrb	r3, [r3, #0]
+ 800430e:	2b00      	cmp	r3, #0
+ 8004310:	d00a      	beq.n	8004328 <open_bin_file+0x138>
 			{
 				interrupt_animation_flag = false;
- 800431a:	4b53      	ldr	r3, [pc, #332]	; (8004468 <open_bin_file+0x278>)
- 800431c:	2200      	movs	r2, #0
- 800431e:	701a      	strb	r2, [r3, #0]
+ 8004312:	4b52      	ldr	r3, [pc, #328]	; (800445c <open_bin_file+0x26c>)
+ 8004314:	2200      	movs	r2, #0
+ 8004316:	701a      	strb	r2, [r3, #0]
 				stop_light_all_turn_off();
- 8004320:	f7fc fd46 	bl	8000db0 <stop_light_all_turn_off>
+ 8004318:	f7fc fd4a 	bl	8000db0 <stop_light_all_turn_off>
 				turn_off_left_and_right_dtript();
- 8004324:	f7fe f8f8 	bl	8002518 <turn_off_left_and_right_dtript>
+ 800431c:	f7fe f8fc 	bl	8002518 <turn_off_left_and_right_dtript>
 				HAL_Delay(100);
- 8004328:	2064      	movs	r0, #100	; 0x64
- 800432a:	f000 fa1f 	bl	800476c <HAL_Delay>
+ 8004320:	2064      	movs	r0, #100	; 0x64
+ 8004322:	f000 fa23 	bl	800476c <HAL_Delay>
 
 				break;
- 800432e:	e16f      	b.n	8004610 <open_bin_file+0x420>
+ 8004326:	e171      	b.n	800460c <open_bin_file+0x41c>
 			}
 
 			memset(frame_buffer, 0, sizeof(frame_buffer));
- 8004330:	f107 030c 	add.w	r3, r7, #12
- 8004334:	f240 32b5 	movw	r2, #949	; 0x3b5
- 8004338:	2100      	movs	r1, #0
- 800433a:	4618      	mov	r0, r3
- 800433c:	f00d f80e 	bl	801135c <memset>
+ 8004328:	f107 030c 	add.w	r3, r7, #12
+ 800432c:	f240 32b5 	movw	r2, #949	; 0x3b5
+ 8004330:	2100      	movs	r1, #0
+ 8004332:	4618      	mov	r0, r3
+ 8004334:	f00d f812 	bl	801135c <memset>
 
 			f_lseek(&MyFile, frame + ((frame_size - 1)*frame));						// shift on one frame
- 8004340:	4b45      	ldr	r3, [pc, #276]	; (8004458 <open_bin_file+0x268>)
- 8004342:	681b      	ldr	r3, [r3, #0]
- 8004344:	3b01      	subs	r3, #1
- 8004346:	4a46      	ldr	r2, [pc, #280]	; (8004460 <open_bin_file+0x270>)
- 8004348:	6812      	ldr	r2, [r2, #0]
- 800434a:	fb03 f202 	mul.w	r2, r3, r2
- 800434e:	4b44      	ldr	r3, [pc, #272]	; (8004460 <open_bin_file+0x270>)
- 8004350:	681b      	ldr	r3, [r3, #0]
- 8004352:	4413      	add	r3, r2
- 8004354:	4619      	mov	r1, r3
- 8004356:	483e      	ldr	r0, [pc, #248]	; (8004450 <open_bin_file+0x260>)
- 8004358:	f00b ff69 	bl	801022e <f_lseek>
+ 8004338:	4b45      	ldr	r3, [pc, #276]	; (8004450 <open_bin_file+0x260>)
+ 800433a:	681b      	ldr	r3, [r3, #0]
+ 800433c:	3b01      	subs	r3, #1
+ 800433e:	4a46      	ldr	r2, [pc, #280]	; (8004458 <open_bin_file+0x268>)
+ 8004340:	6812      	ldr	r2, [r2, #0]
+ 8004342:	fb03 f202 	mul.w	r2, r3, r2
+ 8004346:	4b44      	ldr	r3, [pc, #272]	; (8004458 <open_bin_file+0x268>)
+ 8004348:	681b      	ldr	r3, [r3, #0]
+ 800434a:	4413      	add	r3, r2
+ 800434c:	4619      	mov	r1, r3
+ 800434e:	483e      	ldr	r0, [pc, #248]	; (8004448 <open_bin_file+0x258>)
+ 8004350:	f00b ff6d 	bl	801022e <f_lseek>
 			f_read(&MyFile, aBuffer, vTemp, (UINT *)&vBytesReadCounter);
- 800435c:	f8b7 23d6 	ldrh.w	r2, [r7, #982]	; 0x3d6
- 8004360:	f507 7371 	add.w	r3, r7, #964	; 0x3c4
- 8004364:	4941      	ldr	r1, [pc, #260]	; (800446c <open_bin_file+0x27c>)
- 8004366:	483a      	ldr	r0, [pc, #232]	; (8004450 <open_bin_file+0x260>)
- 8004368:	f00b fd5a 	bl	800fe20 <f_read>
+ 8004354:	f8b7 23d6 	ldrh.w	r2, [r7, #982]	; 0x3d6
+ 8004358:	f507 7371 	add.w	r3, r7, #964	; 0x3c4
+ 800435c:	4940      	ldr	r1, [pc, #256]	; (8004460 <open_bin_file+0x270>)
+ 800435e:	483a      	ldr	r0, [pc, #232]	; (8004448 <open_bin_file+0x258>)
+ 8004360:	f00b fd5e 	bl	800fe20 <f_read>
 			f_gets(frame_buffer, size_buf_for_read, &MyFile);     			// Read one fraime into buffer
- 800436c:	f107 030c 	add.w	r3, r7, #12
- 8004370:	4a37      	ldr	r2, [pc, #220]	; (8004450 <open_bin_file+0x260>)
- 8004372:	f8d7 13cc 	ldr.w	r1, [r7, #972]	; 0x3cc
- 8004376:	4618      	mov	r0, r3
- 8004378:	f00c fb08 	bl	801098c <f_gets>
+ 8004364:	f107 030c 	add.w	r3, r7, #12
+ 8004368:	4a37      	ldr	r2, [pc, #220]	; (8004448 <open_bin_file+0x258>)
+ 800436a:	f8d7 13cc 	ldr.w	r1, [r7, #972]	; 0x3cc
+ 800436e:	4618      	mov	r0, r3
+ 8004370:	f00c fb0c 	bl	801098c <f_gets>
 
 			if((frame > 316) && (frame < 330))			// Place in 7.bin file where somsing wrong
- 800437c:	4b38      	ldr	r3, [pc, #224]	; (8004460 <open_bin_file+0x270>)
- 800437e:	681b      	ldr	r3, [r3, #0]
- 8004380:	f5b3 7f9e 	cmp.w	r3, #316	; 0x13c
- 8004384:	dd07      	ble.n	8004396 <open_bin_file+0x1a6>
- 8004386:	4b36      	ldr	r3, [pc, #216]	; (8004460 <open_bin_file+0x270>)
- 8004388:	681b      	ldr	r3, [r3, #0]
- 800438a:	f5b3 7fa5 	cmp.w	r3, #330	; 0x14a
- 800438e:	da02      	bge.n	8004396 <open_bin_file+0x1a6>
+ 8004374:	4b38      	ldr	r3, [pc, #224]	; (8004458 <open_bin_file+0x268>)
+ 8004376:	681b      	ldr	r3, [r3, #0]
+ 8004378:	f5b3 7f9e 	cmp.w	r3, #316	; 0x13c
+ 800437c:	dd07      	ble.n	800438e <open_bin_file+0x19e>
+ 800437e:	4b36      	ldr	r3, [pc, #216]	; (8004458 <open_bin_file+0x268>)
+ 8004380:	681b      	ldr	r3, [r3, #0]
+ 8004382:	f5b3 7fa5 	cmp.w	r3, #330	; 0x14a
+ 8004386:	da02      	bge.n	800438e <open_bin_file+0x19e>
 			{
 				int ggg = 99;
- 8004390:	2363      	movs	r3, #99	; 0x63
- 8004392:	f8c7 33c8 	str.w	r3, [r7, #968]	; 0x3c8
+ 8004388:	2363      	movs	r3, #99	; 0x63
+ 800438a:	f8c7 33c8 	str.w	r3, [r7, #968]	; 0x3c8
 			}
 
 			// SET Left RGBW LEDs
 			uint16_t number_of_rgbw_leds = 0;
- 8004396:	2300      	movs	r3, #0
- 8004398:	f8a7 33de 	strh.w	r3, [r7, #990]	; 0x3de
+ 800438e:	2300      	movs	r3, #0
+ 8004390:	f8a7 33de 	strh.w	r3, [r7, #990]	; 0x3de
 			int k = 0;
- 800439c:	2300      	movs	r3, #0
- 800439e:	f8c7 33d8 	str.w	r3, [r7, #984]	; 0x3d8
+ 8004394:	2300      	movs	r3, #0
+ 8004396:	f8c7 33d8 	str.w	r3, [r7, #984]	; 0x3d8
 			for(k = end_left_led; k >= strat_left_led; k--)		// 84 LEDs
- 80043a2:	4b33      	ldr	r3, [pc, #204]	; (8004470 <open_bin_file+0x280>)
- 80043a4:	681b      	ldr	r3, [r3, #0]
- 80043a6:	f8c7 33d8 	str.w	r3, [r7, #984]	; 0x3d8
- 80043aa:	e037      	b.n	800441c <open_bin_file+0x22c>
+ 800439a:	4b32      	ldr	r3, [pc, #200]	; (8004464 <open_bin_file+0x274>)
+ 800439c:	681b      	ldr	r3, [r3, #0]
+ 800439e:	f8c7 33d8 	str.w	r3, [r7, #984]	; 0x3d8
+ 80043a2:	e037      	b.n	8004414 <open_bin_file+0x224>
 			{
 				if(k%4 == 0)
- 80043ac:	f8d7 33d8 	ldr.w	r3, [r7, #984]	; 0x3d8
- 80043b0:	f003 0303 	and.w	r3, r3, #3
- 80043b4:	2b00      	cmp	r3, #0
- 80043b6:	d12c      	bne.n	8004412 <open_bin_file+0x222>
+ 80043a4:	f8d7 33d8 	ldr.w	r3, [r7, #984]	; 0x3d8
+ 80043a8:	f003 0303 	and.w	r3, r3, #3
+ 80043ac:	2b00      	cmp	r3, #0
+ 80043ae:	d12c      	bne.n	800440a <open_bin_file+0x21a>
 				{
 					set_left_one_rgbw_led(number_of_rgbw_leds, frame_buffer[k], frame_buffer[k+1], frame_buffer[k+2], frame_buffer[k+3]);
- 80043b8:	f8b7 33de 	ldrh.w	r3, [r7, #990]	; 0x3de
- 80043bc:	b2d8      	uxtb	r0, r3
- 80043be:	f507 7378 	add.w	r3, r7, #992	; 0x3e0
- 80043c2:	f5a3 7275 	sub.w	r2, r3, #980	; 0x3d4
+ 80043b0:	f8b7 33de 	ldrh.w	r3, [r7, #990]	; 0x3de
+ 80043b4:	b2d8      	uxtb	r0, r3
+ 80043b6:	f507 7378 	add.w	r3, r7, #992	; 0x3e0
+ 80043ba:	f5a3 7275 	sub.w	r2, r3, #980	; 0x3d4
+ 80043be:	f8d7 33d8 	ldr.w	r3, [r7, #984]	; 0x3d8
+ 80043c2:	4413      	add	r3, r2
+ 80043c4:	7819      	ldrb	r1, [r3, #0]
  80043c6:	f8d7 33d8 	ldr.w	r3, [r7, #984]	; 0x3d8
- 80043ca:	4413      	add	r3, r2
- 80043cc:	7819      	ldrb	r1, [r3, #0]
- 80043ce:	f8d7 33d8 	ldr.w	r3, [r7, #984]	; 0x3d8
- 80043d2:	3301      	adds	r3, #1
- 80043d4:	f507 7278 	add.w	r2, r7, #992	; 0x3e0
- 80043d8:	f5a2 7275 	sub.w	r2, r2, #980	; 0x3d4
- 80043dc:	5cd4      	ldrb	r4, [r2, r3]
- 80043de:	f8d7 33d8 	ldr.w	r3, [r7, #984]	; 0x3d8
- 80043e2:	3302      	adds	r3, #2
- 80043e4:	f507 7278 	add.w	r2, r7, #992	; 0x3e0
- 80043e8:	f5a2 7275 	sub.w	r2, r2, #980	; 0x3d4
- 80043ec:	5cd5      	ldrb	r5, [r2, r3]
- 80043ee:	f8d7 33d8 	ldr.w	r3, [r7, #984]	; 0x3d8
- 80043f2:	3303      	adds	r3, #3
- 80043f4:	f507 7278 	add.w	r2, r7, #992	; 0x3e0
- 80043f8:	f5a2 7275 	sub.w	r2, r2, #980	; 0x3d4
- 80043fc:	5cd3      	ldrb	r3, [r2, r3]
- 80043fe:	9300      	str	r3, [sp, #0]
- 8004400:	462b      	mov	r3, r5
- 8004402:	4622      	mov	r2, r4
- 8004404:	f7fe f8e1 	bl	80025ca <set_left_one_rgbw_led>
+ 80043ca:	3301      	adds	r3, #1
+ 80043cc:	f507 7278 	add.w	r2, r7, #992	; 0x3e0
+ 80043d0:	f5a2 7275 	sub.w	r2, r2, #980	; 0x3d4
+ 80043d4:	5cd4      	ldrb	r4, [r2, r3]
+ 80043d6:	f8d7 33d8 	ldr.w	r3, [r7, #984]	; 0x3d8
+ 80043da:	3302      	adds	r3, #2
+ 80043dc:	f507 7278 	add.w	r2, r7, #992	; 0x3e0
+ 80043e0:	f5a2 7275 	sub.w	r2, r2, #980	; 0x3d4
+ 80043e4:	5cd5      	ldrb	r5, [r2, r3]
+ 80043e6:	f8d7 33d8 	ldr.w	r3, [r7, #984]	; 0x3d8
+ 80043ea:	3303      	adds	r3, #3
+ 80043ec:	f507 7278 	add.w	r2, r7, #992	; 0x3e0
+ 80043f0:	f5a2 7275 	sub.w	r2, r2, #980	; 0x3d4
+ 80043f4:	5cd3      	ldrb	r3, [r2, r3]
+ 80043f6:	9300      	str	r3, [sp, #0]
+ 80043f8:	462b      	mov	r3, r5
+ 80043fa:	4622      	mov	r2, r4
+ 80043fc:	f7fe f8e5 	bl	80025ca <set_left_one_rgbw_led>
 					number_of_rgbw_leds++;
- 8004408:	f8b7 33de 	ldrh.w	r3, [r7, #990]	; 0x3de
- 800440c:	3301      	adds	r3, #1
- 800440e:	f8a7 33de 	strh.w	r3, [r7, #990]	; 0x3de
+ 8004400:	f8b7 33de 	ldrh.w	r3, [r7, #990]	; 0x3de
+ 8004404:	3301      	adds	r3, #1
+ 8004406:	f8a7 33de 	strh.w	r3, [r7, #990]	; 0x3de
 			for(k = end_left_led; k >= strat_left_led; k--)		// 84 LEDs
- 8004412:	f8d7 33d8 	ldr.w	r3, [r7, #984]	; 0x3d8
- 8004416:	3b01      	subs	r3, #1
- 8004418:	f8c7 33d8 	str.w	r3, [r7, #984]	; 0x3d8
- 800441c:	4b15      	ldr	r3, [pc, #84]	; (8004474 <open_bin_file+0x284>)
- 800441e:	681b      	ldr	r3, [r3, #0]
- 8004420:	f8d7 23d8 	ldr.w	r2, [r7, #984]	; 0x3d8
- 8004424:	429a      	cmp	r2, r3
- 8004426:	dac1      	bge.n	80043ac <open_bin_file+0x1bc>
+ 800440a:	f8d7 33d8 	ldr.w	r3, [r7, #984]	; 0x3d8
+ 800440e:	3b01      	subs	r3, #1
+ 8004410:	f8c7 33d8 	str.w	r3, [r7, #984]	; 0x3d8
+ 8004414:	4b14      	ldr	r3, [pc, #80]	; (8004468 <open_bin_file+0x278>)
+ 8004416:	681b      	ldr	r3, [r3, #0]
+ 8004418:	f8d7 23d8 	ldr.w	r2, [r7, #984]	; 0x3d8
+ 800441c:	429a      	cmp	r2, r3
+ 800441e:	dac1      	bge.n	80043a4 <open_bin_file+0x1b4>
 				}
 			}
 
 			// SET Right RGBW LEDs
 			number_of_rgbw_leds = 0;
- 8004428:	2300      	movs	r3, #0
- 800442a:	f8a7 33de 	strh.w	r3, [r7, #990]	; 0x3de
+ 8004420:	2300      	movs	r3, #0
+ 8004422:	f8a7 33de 	strh.w	r3, [r7, #990]	; 0x3de
 			for(k = end_ritht_led; k >= strat_right_led; k--)
- 800442e:	4b12      	ldr	r3, [pc, #72]	; (8004478 <open_bin_file+0x288>)
- 8004430:	681b      	ldr	r3, [r3, #0]
- 8004432:	f8c7 33d8 	str.w	r3, [r7, #984]	; 0x3d8
- 8004436:	e059      	b.n	80044ec <open_bin_file+0x2fc>
- 8004438:	20001634 	.word	0x20001634
- 800443c:	2000167c 	.word	0x2000167c
- 8004440:	200016c4 	.word	0x200016c4
- 8004444:	20000020 	.word	0x20000020
- 8004448:	200018f8 	.word	0x200018f8
- 800444c:	20000594 	.word	0x20000594
- 8004450:	20001900 	.word	0x20001900
- 8004454:	20002cbc 	.word	0x20002cbc
- 8004458:	20000008 	.word	0x20000008
- 800445c:	20002cc0 	.word	0x20002cc0
- 8004460:	20002cc4 	.word	0x20002cc4
- 8004464:	40021000 	.word	0x40021000
- 8004468:	200015ce 	.word	0x200015ce
- 800446c:	20002abc 	.word	0x20002abc
- 8004470:	20000014 	.word	0x20000014
- 8004474:	20000010 	.word	0x20000010
- 8004478:	2000001c 	.word	0x2000001c
+ 8004426:	4b11      	ldr	r3, [pc, #68]	; (800446c <open_bin_file+0x27c>)
+ 8004428:	681b      	ldr	r3, [r3, #0]
+ 800442a:	f8c7 33d8 	str.w	r3, [r7, #984]	; 0x3d8
+ 800442e:	e057      	b.n	80044e0 <open_bin_file+0x2f0>
+ 8004430:	20001634 	.word	0x20001634
+ 8004434:	2000167c 	.word	0x2000167c
+ 8004438:	200016c4 	.word	0x200016c4
+ 800443c:	20000020 	.word	0x20000020
+ 8004440:	200018f8 	.word	0x200018f8
+ 8004444:	20000594 	.word	0x20000594
+ 8004448:	20001900 	.word	0x20001900
+ 800444c:	20002cbc 	.word	0x20002cbc
+ 8004450:	20000008 	.word	0x20000008
+ 8004454:	20002cc0 	.word	0x20002cc0
+ 8004458:	20002cc4 	.word	0x20002cc4
+ 800445c:	200015ce 	.word	0x200015ce
+ 8004460:	20002abc 	.word	0x20002abc
+ 8004464:	20000014 	.word	0x20000014
+ 8004468:	20000010 	.word	0x20000010
+ 800446c:	2000001c 	.word	0x2000001c
 			{
 				if(k%4 == 0)
- 800447c:	f8d7 33d8 	ldr.w	r3, [r7, #984]	; 0x3d8
- 8004480:	f003 0303 	and.w	r3, r3, #3
- 8004484:	2b00      	cmp	r3, #0
- 8004486:	d12c      	bne.n	80044e2 <open_bin_file+0x2f2>
+ 8004470:	f8d7 33d8 	ldr.w	r3, [r7, #984]	; 0x3d8
+ 8004474:	f003 0303 	and.w	r3, r3, #3
+ 8004478:	2b00      	cmp	r3, #0
+ 800447a:	d12c      	bne.n	80044d6 <open_bin_file+0x2e6>
 				{
 					set_right_one_rgbw_led(number_of_rgbw_leds, frame_buffer[k], frame_buffer[k+1], frame_buffer[k+2], frame_buffer[k+3]);
- 8004488:	f8b7 33de 	ldrh.w	r3, [r7, #990]	; 0x3de
- 800448c:	b2d8      	uxtb	r0, r3
- 800448e:	f507 7378 	add.w	r3, r7, #992	; 0x3e0
- 8004492:	f5a3 7275 	sub.w	r2, r3, #980	; 0x3d4
- 8004496:	f8d7 33d8 	ldr.w	r3, [r7, #984]	; 0x3d8
- 800449a:	4413      	add	r3, r2
- 800449c:	7819      	ldrb	r1, [r3, #0]
- 800449e:	f8d7 33d8 	ldr.w	r3, [r7, #984]	; 0x3d8
- 80044a2:	3301      	adds	r3, #1
- 80044a4:	f507 7278 	add.w	r2, r7, #992	; 0x3e0
- 80044a8:	f5a2 7275 	sub.w	r2, r2, #980	; 0x3d4
- 80044ac:	5cd4      	ldrb	r4, [r2, r3]
- 80044ae:	f8d7 33d8 	ldr.w	r3, [r7, #984]	; 0x3d8
- 80044b2:	3302      	adds	r3, #2
- 80044b4:	f507 7278 	add.w	r2, r7, #992	; 0x3e0
- 80044b8:	f5a2 7275 	sub.w	r2, r2, #980	; 0x3d4
- 80044bc:	5cd5      	ldrb	r5, [r2, r3]
- 80044be:	f8d7 33d8 	ldr.w	r3, [r7, #984]	; 0x3d8
- 80044c2:	3303      	adds	r3, #3
- 80044c4:	f507 7278 	add.w	r2, r7, #992	; 0x3e0
- 80044c8:	f5a2 7275 	sub.w	r2, r2, #980	; 0x3d4
- 80044cc:	5cd3      	ldrb	r3, [r2, r3]
- 80044ce:	9300      	str	r3, [sp, #0]
- 80044d0:	462b      	mov	r3, r5
- 80044d2:	4622      	mov	r2, r4
- 80044d4:	f7fe f89a 	bl	800260c <set_right_one_rgbw_led>
+ 800447c:	f8b7 33de 	ldrh.w	r3, [r7, #990]	; 0x3de
+ 8004480:	b2d8      	uxtb	r0, r3
+ 8004482:	f507 7378 	add.w	r3, r7, #992	; 0x3e0
+ 8004486:	f5a3 7275 	sub.w	r2, r3, #980	; 0x3d4
+ 800448a:	f8d7 33d8 	ldr.w	r3, [r7, #984]	; 0x3d8
+ 800448e:	4413      	add	r3, r2
+ 8004490:	7819      	ldrb	r1, [r3, #0]
+ 8004492:	f8d7 33d8 	ldr.w	r3, [r7, #984]	; 0x3d8
+ 8004496:	3301      	adds	r3, #1
+ 8004498:	f507 7278 	add.w	r2, r7, #992	; 0x3e0
+ 800449c:	f5a2 7275 	sub.w	r2, r2, #980	; 0x3d4
+ 80044a0:	5cd4      	ldrb	r4, [r2, r3]
+ 80044a2:	f8d7 33d8 	ldr.w	r3, [r7, #984]	; 0x3d8
+ 80044a6:	3302      	adds	r3, #2
+ 80044a8:	f507 7278 	add.w	r2, r7, #992	; 0x3e0
+ 80044ac:	f5a2 7275 	sub.w	r2, r2, #980	; 0x3d4
+ 80044b0:	5cd5      	ldrb	r5, [r2, r3]
+ 80044b2:	f8d7 33d8 	ldr.w	r3, [r7, #984]	; 0x3d8
+ 80044b6:	3303      	adds	r3, #3
+ 80044b8:	f507 7278 	add.w	r2, r7, #992	; 0x3e0
+ 80044bc:	f5a2 7275 	sub.w	r2, r2, #980	; 0x3d4
+ 80044c0:	5cd3      	ldrb	r3, [r2, r3]
+ 80044c2:	9300      	str	r3, [sp, #0]
+ 80044c4:	462b      	mov	r3, r5
+ 80044c6:	4622      	mov	r2, r4
+ 80044c8:	f7fe f8a0 	bl	800260c <set_right_one_rgbw_led>
 					number_of_rgbw_leds++;
- 80044d8:	f8b7 33de 	ldrh.w	r3, [r7, #990]	; 0x3de
- 80044dc:	3301      	adds	r3, #1
- 80044de:	f8a7 33de 	strh.w	r3, [r7, #990]	; 0x3de
+ 80044cc:	f8b7 33de 	ldrh.w	r3, [r7, #990]	; 0x3de
+ 80044d0:	3301      	adds	r3, #1
+ 80044d2:	f8a7 33de 	strh.w	r3, [r7, #990]	; 0x3de
 			for(k = end_ritht_led; k >= strat_right_led; k--)
- 80044e2:	f8d7 33d8 	ldr.w	r3, [r7, #984]	; 0x3d8
- 80044e6:	3b01      	subs	r3, #1
- 80044e8:	f8c7 33d8 	str.w	r3, [r7, #984]	; 0x3d8
- 80044ec:	4b4c      	ldr	r3, [pc, #304]	; (8004620 <open_bin_file+0x430>)
- 80044ee:	681b      	ldr	r3, [r3, #0]
- 80044f0:	f8d7 23d8 	ldr.w	r2, [r7, #984]	; 0x3d8
- 80044f4:	429a      	cmp	r2, r3
- 80044f6:	dac1      	bge.n	800447c <open_bin_file+0x28c>
+ 80044d6:	f8d7 33d8 	ldr.w	r3, [r7, #984]	; 0x3d8
+ 80044da:	3b01      	subs	r3, #1
+ 80044dc:	f8c7 33d8 	str.w	r3, [r7, #984]	; 0x3d8
+ 80044e0:	4b4e      	ldr	r3, [pc, #312]	; (800461c <open_bin_file+0x42c>)
+ 80044e2:	681b      	ldr	r3, [r3, #0]
+ 80044e4:	f8d7 23d8 	ldr.w	r2, [r7, #984]	; 0x3d8
+ 80044e8:	429a      	cmp	r2, r3
+ 80044ea:	dac1      	bge.n	8004470 <open_bin_file+0x280>
 			}
 
 			// make_delay(267);
 
 			// SET RED LEDs
 			set_duty_cycle_stop_left_5(frame_buffer[start_evenled + 16 ]);
- 80044f8:	4b4a      	ldr	r3, [pc, #296]	; (8004624 <open_bin_file+0x434>)
- 80044fa:	681b      	ldr	r3, [r3, #0]
- 80044fc:	3310      	adds	r3, #16
- 80044fe:	f507 7278 	add.w	r2, r7, #992	; 0x3e0
- 8004502:	f5a2 7275 	sub.w	r2, r2, #980	; 0x3d4
- 8004506:	5cd3      	ldrb	r3, [r2, r3]
- 8004508:	4618      	mov	r0, r3
- 800450a:	f7fc fbf1 	bl	8000cf0 <set_duty_cycle_stop_left_5>
+ 80044ec:	4b4c      	ldr	r3, [pc, #304]	; (8004620 <open_bin_file+0x430>)
+ 80044ee:	681b      	ldr	r3, [r3, #0]
+ 80044f0:	3310      	adds	r3, #16
+ 80044f2:	f507 7278 	add.w	r2, r7, #992	; 0x3e0
+ 80044f6:	f5a2 7275 	sub.w	r2, r2, #980	; 0x3d4
+ 80044fa:	5cd3      	ldrb	r3, [r2, r3]
+ 80044fc:	4618      	mov	r0, r3
+ 80044fe:	f7fc fbf7 	bl	8000cf0 <set_duty_cycle_stop_left_5>
 			set_duty_cycle_stop_left_4(frame_buffer[start_evenled + 12 ]);
- 800450e:	4b45      	ldr	r3, [pc, #276]	; (8004624 <open_bin_file+0x434>)
- 8004510:	681b      	ldr	r3, [r3, #0]
- 8004512:	330c      	adds	r3, #12
- 8004514:	f507 7278 	add.w	r2, r7, #992	; 0x3e0
- 8004518:	f5a2 7275 	sub.w	r2, r2, #980	; 0x3d4
- 800451c:	5cd3      	ldrb	r3, [r2, r3]
- 800451e:	4618      	mov	r0, r3
- 8004520:	f7fc fbd6 	bl	8000cd0 <set_duty_cycle_stop_left_4>
+ 8004502:	4b47      	ldr	r3, [pc, #284]	; (8004620 <open_bin_file+0x430>)
+ 8004504:	681b      	ldr	r3, [r3, #0]
+ 8004506:	330c      	adds	r3, #12
+ 8004508:	f507 7278 	add.w	r2, r7, #992	; 0x3e0
+ 800450c:	f5a2 7275 	sub.w	r2, r2, #980	; 0x3d4
+ 8004510:	5cd3      	ldrb	r3, [r2, r3]
+ 8004512:	4618      	mov	r0, r3
+ 8004514:	f7fc fbdc 	bl	8000cd0 <set_duty_cycle_stop_left_4>
 			set_duty_cycle_stop_left_3(frame_buffer[start_evenled + 8 ]);
- 8004524:	4b3f      	ldr	r3, [pc, #252]	; (8004624 <open_bin_file+0x434>)
- 8004526:	681b      	ldr	r3, [r3, #0]
- 8004528:	3308      	adds	r3, #8
- 800452a:	f507 7278 	add.w	r2, r7, #992	; 0x3e0
- 800452e:	f5a2 7275 	sub.w	r2, r2, #980	; 0x3d4
- 8004532:	5cd3      	ldrb	r3, [r2, r3]
- 8004534:	4618      	mov	r0, r3
- 8004536:	f7fc fbbb 	bl	8000cb0 <set_duty_cycle_stop_left_3>
+ 8004518:	4b41      	ldr	r3, [pc, #260]	; (8004620 <open_bin_file+0x430>)
+ 800451a:	681b      	ldr	r3, [r3, #0]
+ 800451c:	3308      	adds	r3, #8
+ 800451e:	f507 7278 	add.w	r2, r7, #992	; 0x3e0
+ 8004522:	f5a2 7275 	sub.w	r2, r2, #980	; 0x3d4
+ 8004526:	5cd3      	ldrb	r3, [r2, r3]
+ 8004528:	4618      	mov	r0, r3
+ 800452a:	f7fc fbc1 	bl	8000cb0 <set_duty_cycle_stop_left_3>
 			set_duty_cycle_stop_left_2(frame_buffer[start_evenled + 4 ]);
- 800453a:	4b3a      	ldr	r3, [pc, #232]	; (8004624 <open_bin_file+0x434>)
- 800453c:	681b      	ldr	r3, [r3, #0]
- 800453e:	3304      	adds	r3, #4
- 8004540:	f507 7278 	add.w	r2, r7, #992	; 0x3e0
- 8004544:	f5a2 7275 	sub.w	r2, r2, #980	; 0x3d4
- 8004548:	5cd3      	ldrb	r3, [r2, r3]
- 800454a:	4618      	mov	r0, r3
- 800454c:	f7fc fba0 	bl	8000c90 <set_duty_cycle_stop_left_2>
+ 800452e:	4b3c      	ldr	r3, [pc, #240]	; (8004620 <open_bin_file+0x430>)
+ 8004530:	681b      	ldr	r3, [r3, #0]
+ 8004532:	3304      	adds	r3, #4
+ 8004534:	f507 7278 	add.w	r2, r7, #992	; 0x3e0
+ 8004538:	f5a2 7275 	sub.w	r2, r2, #980	; 0x3d4
+ 800453c:	5cd3      	ldrb	r3, [r2, r3]
+ 800453e:	4618      	mov	r0, r3
+ 8004540:	f7fc fba6 	bl	8000c90 <set_duty_cycle_stop_left_2>
 			set_duty_cycle_stop_left_1(frame_buffer[start_evenled]);
- 8004550:	4b34      	ldr	r3, [pc, #208]	; (8004624 <open_bin_file+0x434>)
- 8004552:	681b      	ldr	r3, [r3, #0]
- 8004554:	f507 7278 	add.w	r2, r7, #992	; 0x3e0
- 8004558:	f5a2 7275 	sub.w	r2, r2, #980	; 0x3d4
- 800455c:	5cd3      	ldrb	r3, [r2, r3]
- 800455e:	4618      	mov	r0, r3
- 8004560:	f7fc fb86 	bl	8000c70 <set_duty_cycle_stop_left_1>
+ 8004544:	4b36      	ldr	r3, [pc, #216]	; (8004620 <open_bin_file+0x430>)
+ 8004546:	681b      	ldr	r3, [r3, #0]
+ 8004548:	f507 7278 	add.w	r2, r7, #992	; 0x3e0
+ 800454c:	f5a2 7275 	sub.w	r2, r2, #980	; 0x3d4
+ 8004550:	5cd3      	ldrb	r3, [r2, r3]
+ 8004552:	4618      	mov	r0, r3
+ 8004554:	f7fc fb8c 	bl	8000c70 <set_duty_cycle_stop_left_1>
 
 			set_duty_cycle_stop_ritht_1(frame_buffer[start_evenled + 20 ]);
- 8004564:	4b2f      	ldr	r3, [pc, #188]	; (8004624 <open_bin_file+0x434>)
- 8004566:	681b      	ldr	r3, [r3, #0]
- 8004568:	3314      	adds	r3, #20
- 800456a:	f507 7278 	add.w	r2, r7, #992	; 0x3e0
- 800456e:	f5a2 7275 	sub.w	r2, r2, #980	; 0x3d4
- 8004572:	5cd3      	ldrb	r3, [r2, r3]
- 8004574:	4618      	mov	r0, r3
- 8004576:	f7fc fbcb 	bl	8000d10 <set_duty_cycle_stop_ritht_1>
+ 8004558:	4b31      	ldr	r3, [pc, #196]	; (8004620 <open_bin_file+0x430>)
+ 800455a:	681b      	ldr	r3, [r3, #0]
+ 800455c:	3314      	adds	r3, #20
+ 800455e:	f507 7278 	add.w	r2, r7, #992	; 0x3e0
+ 8004562:	f5a2 7275 	sub.w	r2, r2, #980	; 0x3d4
+ 8004566:	5cd3      	ldrb	r3, [r2, r3]
+ 8004568:	4618      	mov	r0, r3
+ 800456a:	f7fc fbd1 	bl	8000d10 <set_duty_cycle_stop_ritht_1>
 			set_duty_cycle_stop_ritht_2(frame_buffer[start_evenled + 24 ]);
- 800457a:	4b2a      	ldr	r3, [pc, #168]	; (8004624 <open_bin_file+0x434>)
- 800457c:	681b      	ldr	r3, [r3, #0]
- 800457e:	3318      	adds	r3, #24
- 8004580:	f507 7278 	add.w	r2, r7, #992	; 0x3e0
- 8004584:	f5a2 7275 	sub.w	r2, r2, #980	; 0x3d4
- 8004588:	5cd3      	ldrb	r3, [r2, r3]
- 800458a:	4618      	mov	r0, r3
- 800458c:	f7fc fbd0 	bl	8000d30 <set_duty_cycle_stop_ritht_2>
+ 800456e:	4b2c      	ldr	r3, [pc, #176]	; (8004620 <open_bin_file+0x430>)
+ 8004570:	681b      	ldr	r3, [r3, #0]
+ 8004572:	3318      	adds	r3, #24
+ 8004574:	f507 7278 	add.w	r2, r7, #992	; 0x3e0
+ 8004578:	f5a2 7275 	sub.w	r2, r2, #980	; 0x3d4
+ 800457c:	5cd3      	ldrb	r3, [r2, r3]
+ 800457e:	4618      	mov	r0, r3
+ 8004580:	f7fc fbd6 	bl	8000d30 <set_duty_cycle_stop_ritht_2>
 			set_duty_cycle_stop_ritht_3(frame_buffer[start_evenled + 28 ]);
- 8004590:	4b24      	ldr	r3, [pc, #144]	; (8004624 <open_bin_file+0x434>)
- 8004592:	681b      	ldr	r3, [r3, #0]
- 8004594:	331c      	adds	r3, #28
- 8004596:	f507 7278 	add.w	r2, r7, #992	; 0x3e0
- 800459a:	f5a2 7275 	sub.w	r2, r2, #980	; 0x3d4
- 800459e:	5cd3      	ldrb	r3, [r2, r3]
- 80045a0:	4618      	mov	r0, r3
- 80045a2:	f7fc fbd5 	bl	8000d50 <set_duty_cycle_stop_ritht_3>
+ 8004584:	4b26      	ldr	r3, [pc, #152]	; (8004620 <open_bin_file+0x430>)
+ 8004586:	681b      	ldr	r3, [r3, #0]
+ 8004588:	331c      	adds	r3, #28
+ 800458a:	f507 7278 	add.w	r2, r7, #992	; 0x3e0
+ 800458e:	f5a2 7275 	sub.w	r2, r2, #980	; 0x3d4
+ 8004592:	5cd3      	ldrb	r3, [r2, r3]
+ 8004594:	4618      	mov	r0, r3
+ 8004596:	f7fc fbdb 	bl	8000d50 <set_duty_cycle_stop_ritht_3>
 			set_duty_cycle_stop_ritht_4(frame_buffer[start_evenled + 32 ]);
- 80045a6:	4b1f      	ldr	r3, [pc, #124]	; (8004624 <open_bin_file+0x434>)
- 80045a8:	681b      	ldr	r3, [r3, #0]
- 80045aa:	3320      	adds	r3, #32
- 80045ac:	f507 7278 	add.w	r2, r7, #992	; 0x3e0
- 80045b0:	f5a2 7275 	sub.w	r2, r2, #980	; 0x3d4
- 80045b4:	5cd3      	ldrb	r3, [r2, r3]
- 80045b6:	4618      	mov	r0, r3
- 80045b8:	f7fc fbda 	bl	8000d70 <set_duty_cycle_stop_ritht_4>
+ 800459a:	4b21      	ldr	r3, [pc, #132]	; (8004620 <open_bin_file+0x430>)
+ 800459c:	681b      	ldr	r3, [r3, #0]
+ 800459e:	3320      	adds	r3, #32
+ 80045a0:	f507 7278 	add.w	r2, r7, #992	; 0x3e0
+ 80045a4:	f5a2 7275 	sub.w	r2, r2, #980	; 0x3d4
+ 80045a8:	5cd3      	ldrb	r3, [r2, r3]
+ 80045aa:	4618      	mov	r0, r3
+ 80045ac:	f7fc fbe0 	bl	8000d70 <set_duty_cycle_stop_ritht_4>
 			set_duty_cycle_stop_ritht_5(frame_buffer[start_evenled + 36 ]);
- 80045bc:	4b19      	ldr	r3, [pc, #100]	; (8004624 <open_bin_file+0x434>)
- 80045be:	681b      	ldr	r3, [r3, #0]
- 80045c0:	3324      	adds	r3, #36	; 0x24
- 80045c2:	f507 7278 	add.w	r2, r7, #992	; 0x3e0
- 80045c6:	f5a2 7275 	sub.w	r2, r2, #980	; 0x3d4
- 80045ca:	5cd3      	ldrb	r3, [r2, r3]
- 80045cc:	4618      	mov	r0, r3
- 80045ce:	f7fc fbdf 	bl	8000d90 <set_duty_cycle_stop_ritht_5>
+ 80045b0:	4b1b      	ldr	r3, [pc, #108]	; (8004620 <open_bin_file+0x430>)
+ 80045b2:	681b      	ldr	r3, [r3, #0]
+ 80045b4:	3324      	adds	r3, #36	; 0x24
+ 80045b6:	f507 7278 	add.w	r2, r7, #992	; 0x3e0
+ 80045ba:	f5a2 7275 	sub.w	r2, r2, #980	; 0x3d4
+ 80045be:	5cd3      	ldrb	r3, [r2, r3]
+ 80045c0:	4618      	mov	r0, r3
+ 80045c2:	f7fc fbe5 	bl	8000d90 <set_duty_cycle_stop_ritht_5>
 
 			while (!ARGB_Show_left());  		// Update
+ 80045c6:	bf00      	nop
+ 80045c8:	f7fc ff38 	bl	800143c <ARGB_Show_left>
+ 80045cc:	4603      	mov	r3, r0
+ 80045ce:	2b00      	cmp	r3, #0
+ 80045d0:	d0fa      	beq.n	80045c8 <open_bin_file+0x3d8>
+			while (!ARGB_Show_right());  		// Update
  80045d2:	bf00      	nop
- 80045d4:	f7fc ff32 	bl	800143c <ARGB_Show_left>
+ 80045d4:	f7fd f8fe 	bl	80017d4 <ARGB_Show_right>
  80045d8:	4603      	mov	r3, r0
  80045da:	2b00      	cmp	r3, #0
  80045dc:	d0fa      	beq.n	80045d4 <open_bin_file+0x3e4>
-			while (!ARGB_Show_right());  		// Update
- 80045de:	bf00      	nop
- 80045e0:	f7fd f8f8 	bl	80017d4 <ARGB_Show_right>
- 80045e4:	4603      	mov	r3, r0
- 80045e6:	2b00      	cmp	r3, #0
- 80045e8:	d0fa      	beq.n	80045e0 <open_bin_file+0x3f0>
 
 			interrupt_flag = 0;				// Tim 13
- 80045ea:	4b0f      	ldr	r3, [pc, #60]	; (8004628 <open_bin_file+0x438>)
- 80045ec:	2200      	movs	r2, #0
- 80045ee:	701a      	strb	r2, [r3, #0]
+ 80045de:	4b11      	ldr	r3, [pc, #68]	; (8004624 <open_bin_file+0x434>)
+ 80045e0:	2200      	movs	r2, #0
+ 80045e2:	701a      	strb	r2, [r3, #0]
+
+			HAL_GPIO_TogglePin(GPIOE, TEST_OUTPUT_1_Pin);					// For measure
+ 80045e4:	2104      	movs	r1, #4
+ 80045e6:	4810      	ldr	r0, [pc, #64]	; (8004628 <open_bin_file+0x438>)
+ 80045e8:	f000 ffad 	bl	8005546 <HAL_GPIO_TogglePin>
 		for(frame; ((frame < how_many_frames) && (interrupt_flag == 1)); frame++)
- 80045f0:	4b0e      	ldr	r3, [pc, #56]	; (800462c <open_bin_file+0x43c>)
- 80045f2:	681b      	ldr	r3, [r3, #0]
- 80045f4:	3301      	adds	r3, #1
- 80045f6:	4a0d      	ldr	r2, [pc, #52]	; (800462c <open_bin_file+0x43c>)
- 80045f8:	6013      	str	r3, [r2, #0]
- 80045fa:	4b0c      	ldr	r3, [pc, #48]	; (800462c <open_bin_file+0x43c>)
- 80045fc:	681a      	ldr	r2, [r3, #0]
- 80045fe:	4b0c      	ldr	r3, [pc, #48]	; (8004630 <open_bin_file+0x440>)
- 8004600:	681b      	ldr	r3, [r3, #0]
- 8004602:	429a      	cmp	r2, r3
- 8004604:	da04      	bge.n	8004610 <open_bin_file+0x420>
- 8004606:	4b08      	ldr	r3, [pc, #32]	; (8004628 <open_bin_file+0x438>)
- 8004608:	781b      	ldrb	r3, [r3, #0]
- 800460a:	2b01      	cmp	r3, #1
- 800460c:	f43f ae7d 	beq.w	800430a <open_bin_file+0x11a>
+ 80045ec:	4b0f      	ldr	r3, [pc, #60]	; (800462c <open_bin_file+0x43c>)
+ 80045ee:	681b      	ldr	r3, [r3, #0]
+ 80045f0:	3301      	adds	r3, #1
+ 80045f2:	4a0e      	ldr	r2, [pc, #56]	; (800462c <open_bin_file+0x43c>)
+ 80045f4:	6013      	str	r3, [r2, #0]
+ 80045f6:	4b0d      	ldr	r3, [pc, #52]	; (800462c <open_bin_file+0x43c>)
+ 80045f8:	681a      	ldr	r2, [r3, #0]
+ 80045fa:	4b0d      	ldr	r3, [pc, #52]	; (8004630 <open_bin_file+0x440>)
+ 80045fc:	681b      	ldr	r3, [r3, #0]
+ 80045fe:	429a      	cmp	r2, r3
+ 8004600:	da04      	bge.n	800460c <open_bin_file+0x41c>
+ 8004602:	4b08      	ldr	r3, [pc, #32]	; (8004624 <open_bin_file+0x434>)
+ 8004604:	781b      	ldrb	r3, [r3, #0]
+ 8004606:	2b01      	cmp	r3, #1
+ 8004608:	f43f ae7f 	beq.w	800430a <open_bin_file+0x11a>
 		}
 		return 0;
- 8004610:	2300      	movs	r3, #0
- 8004612:	e7ff      	b.n	8004614 <open_bin_file+0x424>
+ 800460c:	2300      	movs	r3, #0
+ 800460e:	e7ff      	b.n	8004610 <open_bin_file+0x420>
 	}
 }
- 8004614:	4618      	mov	r0, r3
- 8004616:	f507 7778 	add.w	r7, r7, #992	; 0x3e0
- 800461a:	46bd      	mov	sp, r7
- 800461c:	bdb0      	pop	{r4, r5, r7, pc}
- 800461e:	bf00      	nop
- 8004620:	20000018 	.word	0x20000018
- 8004624:	2000000c 	.word	0x2000000c
- 8004628:	200015db 	.word	0x200015db
+ 8004610:	4618      	mov	r0, r3
+ 8004612:	f507 7778 	add.w	r7, r7, #992	; 0x3e0
+ 8004616:	46bd      	mov	sp, r7
+ 8004618:	bdb0      	pop	{r4, r5, r7, pc}
+ 800461a:	bf00      	nop
+ 800461c:	20000018 	.word	0x20000018
+ 8004620:	2000000c 	.word	0x2000000c
+ 8004624:	200015db 	.word	0x200015db
+ 8004628:	40021000 	.word	0x40021000
  800462c:	20002cc4 	.word	0x20002cc4
  8004630:	20002cc0 	.word	0x20002cc0
 

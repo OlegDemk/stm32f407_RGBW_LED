@@ -645,7 +645,7 @@ uint8_t open_bin_file(char* name)
 
 		for(frame; ((frame < how_many_frames) && (interrupt_flag == 1)); frame++)
 		{
-			HAL_GPIO_TogglePin(GPIOE, TEST_OUTPUT_1_Pin);					// For measure
+			//HAL_GPIO_TogglePin(GPIOE, TEST_OUTPUT_1_Pin);					// For measure
 
 			if(interrupt_animation_flag == true)						// If was sent "STOP animation" command. 'z' key
 			{
@@ -710,6 +710,8 @@ uint8_t open_bin_file(char* name)
 			while (!ARGB_Show_right());  		// Update
 
 			interrupt_flag = 0;				// Tim 13
+
+			HAL_GPIO_TogglePin(GPIOE, TEST_OUTPUT_1_Pin);					// For measure
 		}
 		return 0;
 	}
