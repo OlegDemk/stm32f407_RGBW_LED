@@ -447,8 +447,6 @@ void test_function_generate_delay(void)
 }
 // -----------------------------------------------------------------------------------------------
 
-
-
 void test_double_buffer(char* name)
 {
 	uint16_t vTemp = 0;
@@ -591,22 +589,7 @@ uint8_t open_bin_file(char* name)
 	HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_3);
 
 
-	///////////////////////////////////////////////////
-
-	// 1. Відкрити файл
-	// 2. ПОрахувати кількість фреймів
-	// 3. Включити таймер
-
-	// 		Прочитати один фрейм
-	// 		Якщо є 0.04 Hz
-	// 			Вигрузити (включити леди)
-	// 			Якщо фрейм останній то закрити файл
-	// 		Якщо нема
-	//			вийти
-
-
-
-	static bool open_file_flag = true;
+	static bool open_file_flag = false;
 
 	if(open_file_flag == false)		// if file wasn't opened before
 	{
@@ -634,7 +617,7 @@ uint8_t open_bin_file(char* name)
 	{
 		static int frame = 0;
 
-		if(frame >= how_many_frames)
+		if(frame >= how_many_frames)		// If all frames has been read
 		{
 			f_close(&MyFile);
 			open_file_flag = false;
@@ -657,16 +640,16 @@ uint8_t open_bin_file(char* name)
 				break;
 			}
 
-			memset(frame_buffer, 0, sizeof(frame_buffer));
+			memset(frame_buffer, 0, sizeof(frame_buffer));		// must be 4 buffer
 
 			f_lseek(&MyFile, frame + ((frame_size - 1)*frame));						// shift on one frame
 			f_read(&MyFile, aBuffer, vTemp, (UINT *)&vBytesReadCounter);
 			f_gets(frame_buffer, size_buf_for_read, &MyFile);     			// Read one fraime into buffer
 
-			if((frame > 316) && (frame < 330))			// Place in 7.bin file where somsing wrong
-			{
-				int ggg = 99;
-			}
+//			if((frame > 316) && (frame < 330))			// Place in 7.bin file where somsing wrong
+//			{
+//				int ggg = 99;
+//			}
 
 			// SET Left RGBW LEDs
 			uint16_t number_of_rgbw_leds = 0;
@@ -693,6 +676,8 @@ uint8_t open_bin_file(char* name)
 
 			// make_delay(267);
 
+			// тут чекати на флаг 25 Гц  			// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
 			// SET RED LEDs
 			set_duty_cycle_stop_left_5(frame_buffer[start_evenled + 16 ]);
 			set_duty_cycle_stop_left_4(frame_buffer[start_evenled + 12 ]);
@@ -706,12 +691,15 @@ uint8_t open_bin_file(char* name)
 			set_duty_cycle_stop_ritht_4(frame_buffer[start_evenled + 32 ]);
 			set_duty_cycle_stop_ritht_5(frame_buffer[start_evenled + 36 ]);
 
-			while (!ARGB_Show_left());  		// Update
-			while (!ARGB_Show_right());  		// Update
+			// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+			while (!ARGB_Show_left());  		// Update    	(Takes time around 17 us)
+			while (!ARGB_Show_right());  		// Update		(Takes time around 17 us)
 
 			interrupt_flag = 0;				// Tim 13
 
-			HAL_GPIO_TogglePin(GPIOE, TEST_OUTPUT_1_Pin);					// For measure
+			// HAL_GPIO_WritePin(GPIOE, TEST_OUTPUT_2_Pin, GPIO_PIN_SET);
+			//HAL_GPIO_TogglePin(GPIOE, TEST_OUTPUT_1_Pin);					// For measure
 		}
 		return 0;
 	}
@@ -732,7 +720,6 @@ uint8_t open_my_bin_file(char* name)
 	uint32_t vIndex = 0;
 	uint32_t vFileSize = MyFile.obj.objsize;
 	uint32_t vBytesReadCounter;
-
 
 	// uint8_t frame_buffer[948] = {0};			// One frame buffer
 

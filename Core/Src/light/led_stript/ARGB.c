@@ -456,7 +456,7 @@ ARGB_STATE ARGB_Show_left(void) {
 ARGB_STATE ARGB_Show_right(void) {             //////////////////////////////////////   BUF_COUNTER  ?????
 	ARGB_LOC_ST_RIGHT = ARGB_BUSY;
     if (BUF_COUNTER_RIGHT != 0 || DMA_HANDLE_RIGHT.State != HAL_DMA_STATE_READY) { // <<<<<<<<<<<<<<<<<<<<<<<<< Зависає тут
-        //return ARGB_BUSY;
+        return ARGB_BUSY;
     } else {
         for (volatile u8_t i = 0; i < 8; i++) {
             // set first transfer from first values
