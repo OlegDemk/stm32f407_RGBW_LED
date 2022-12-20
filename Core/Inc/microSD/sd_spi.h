@@ -16,6 +16,8 @@
 #include <stdint.h>
 #include "fatfs.h"
 
+#include "stdbool.h"
+
 //#include "main.h"
 
 /***	DEFINES	***************************************************************************************************************************************************************************************/
@@ -101,5 +103,7 @@ uint8_t open_my_bin_file(char* name);
 
 void test_double_buffer(char* name);
 void test_function_generate_delay(void);
+
+bool update_all_leds(int frame, int how_many_frames);
 
 #endif /* INC_MICROSD_SD_SPI_H_ */

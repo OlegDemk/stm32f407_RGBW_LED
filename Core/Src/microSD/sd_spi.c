@@ -15,16 +15,11 @@
 #include <light/led_stript/control.h>
 #include "light/led_stop/stop_light.h"
 
-#define ON 1
-#define OFF 0
-#define OLD_VER_LEFT ON
-#define OLD_VER_RIGHT ON
 
 extern TIM_HandleTypeDef htim2;
 extern TIM_HandleTypeDef htim3;
 extern TIM_HandleTypeDef htim4;
 extern TIM_HandleTypeDef htim5;
-
 
 
 extern uint8_t frame_start_flag;
@@ -60,7 +55,13 @@ extern uint8_t interrupt_flag;			// ставиться в htim13
 extern TIM_HandleTypeDef htim13;
 
 
+//int frame = 0;
+int how_many_frames = 0;
+
 void make_delay(int delay);
+
+
+extern uint8_t frame_buffer[949];
 
 /***	FUNCTIONS	***********************************************************************************************************************************************************************************/
 /******************************************************************************************************************************************************************************************************/
@@ -340,9 +341,6 @@ uint8_t SD_SPI_WriteFile(void)
 	uint8_t aWriteBuffer[100] = {0};
 	uint32_t vBytesWritteCounter;
 
-
-
-
 	if(f_mount(&SDFatFs, (TCHAR const*)USER_Path, 0))
 		{
 			SD_Error_Handler();
@@ -524,17 +522,17 @@ void test_double_buffer(char* name)
 					}
 
 					// SET RED LEDs
-					set_duty_cycle_stop_left_5(frame_buffer_A[start_evenled + 16 ]);
-					set_duty_cycle_stop_left_4(frame_buffer_A[start_evenled + 12 ]);
-					set_duty_cycle_stop_left_3(frame_buffer_A[start_evenled + 8 ]);
-					set_duty_cycle_stop_left_2(frame_buffer_A[start_evenled + 4 ]);
-					set_duty_cycle_stop_left_1(frame_buffer_A[start_evenled]);
-
-					set_duty_cycle_stop_ritht_1(frame_buffer_A[start_evenled + 20 ]);
-					set_duty_cycle_stop_ritht_2(frame_buffer_A[start_evenled + 24 ]);
-					set_duty_cycle_stop_ritht_3(frame_buffer_A[start_evenled + 28 ]);
-					set_duty_cycle_stop_ritht_4(frame_buffer_A[start_evenled + 32 ]);
-					set_duty_cycle_stop_ritht_5(frame_buffer_A[start_evenled + 36 ]);
+//					set_duty_cycle_stop_left_5(frame_buffer_A[start_evenled + 16 ]);
+//					set_duty_cycle_stop_left_4(frame_buffer_A[start_evenled + 12 ]);
+//					set_duty_cycle_stop_left_3(frame_buffer_A[start_evenled + 8 ]);
+//					set_duty_cycle_stop_left_2(frame_buffer_A[start_evenled + 4 ]);
+//					set_duty_cycle_stop_left_1(frame_buffer_A[start_evenled]);
+//
+//					set_duty_cycle_stop_ritht_1(frame_buffer_A[start_evenled + 20 ]);
+//					set_duty_cycle_stop_ritht_2(frame_buffer_A[start_evenled + 24 ]);
+//					set_duty_cycle_stop_ritht_3(frame_buffer_A[start_evenled + 28 ]);
+//					set_duty_cycle_stop_ritht_4(frame_buffer_A[start_evenled + 32 ]);
+//					set_duty_cycle_stop_ritht_5(frame_buffer_A[start_evenled + 36 ]);
 
 					while (!ARGB_Show_left());  		// Update
 					while (!ARGB_Show_right());  		// Update
@@ -676,7 +674,7 @@ uint8_t open_bin_file(char* name)
 
 			// make_delay(267);
 
-			// тут чекати на флаг 25 Гц  			// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+			// тут чекати на флаг 25 Гц
 
 			// SET RED LEDs
 			set_duty_cycle_stop_left_5(frame_buffer[start_evenled + 16 ]);
@@ -703,6 +701,47 @@ uint8_t open_bin_file(char* name)
 		}
 		return 0;
 	}
+}
+// -----------------------------------------------------------------------------------------------------------
+//
+bool update_all_leds(int frame, int how_many_frames)
+{
+//	for(frame; ((frame < how_many_frames) && (interrupt_flag == 1)); frame++)
+//	{
+		// SET RED LEDs
+		set_duty_cycle_stop_left_5(frame_buffer[start_evenled + 16 ]);
+		set_duty_cycle_stop_left_4(frame_buffer[start_evenled + 12 ]);
+		set_duty_cycle_stop_left_3(frame_buffer[start_evenled + 8 ]);
+		set_duty_cycle_stop_left_2(frame_buffer[start_evenled + 4 ]);
+		set_duty_cycle_stop_left_1(frame_buffer[start_evenled]);
+
+		set_duty_cycle_stop_ritht_1(frame_buffer[start_evenled + 20 ]);
+		set_duty_cycle_stop_ritht_2(frame_buffer[start_evenled + 24 ]);
+		set_duty_cycle_stop_ritht_3(frame_buffer[start_evenled + 28 ]);
+		set_duty_cycle_stop_ritht_4(frame_buffer[start_evenled + 32 ]);
+		set_duty_cycle_stop_ritht_5(frame_buffer[start_evenled + 36 ]);
+
+//		HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
+//		HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2);
+//		HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3);
+//		HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_4);
+//		HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
+//		HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
+//		HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_3);
+//		HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4);
+//		HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_2);
+//		HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_3);
+
+		while (!ARGB_Show_left());  		// Update    	(Takes time around 17 us)
+		while (!ARGB_Show_right());  		// Update		(Takes time around 17 us)
+
+		interrupt_flag = 0;				// Tim 13
+
+		HAL_GPIO_TogglePin(GPIOE, TEST_OUTPUT_1_Pin);
+
+		return true;
+////	}
+//	return false;
 }
 
 // -----------------------------------------------------------------------------------------------------------
