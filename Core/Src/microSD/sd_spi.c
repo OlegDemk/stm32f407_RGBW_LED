@@ -22,7 +22,7 @@ extern TIM_HandleTypeDef htim4;
 extern TIM_HandleTypeDef htim5;
 
 
-extern uint8_t frame_start_flag;
+
 
 char USER_Path[4];
 FATFS *fs;
@@ -537,7 +537,7 @@ void test_double_buffer(char* name)
 					while (!ARGB_Show_left());  		// Update
 					while (!ARGB_Show_right());  		// Update
 
-					frame_start_flag = 0;
+
 
 					//flip_flag_interrupt = 0;
 
@@ -704,44 +704,27 @@ uint8_t open_bin_file(char* name)
 }
 // -----------------------------------------------------------------------------------------------------------
 //
-bool update_all_leds(int frame, int how_many_frames)
+void update_all_leds(void)
 {
-//	for(frame; ((frame < how_many_frames) && (interrupt_flag == 1)); frame++)
-//	{
-		// SET RED LEDs
-		set_duty_cycle_stop_left_5(frame_buffer[start_evenled + 16 ]);
-		set_duty_cycle_stop_left_4(frame_buffer[start_evenled + 12 ]);
-		set_duty_cycle_stop_left_3(frame_buffer[start_evenled + 8 ]);
-		set_duty_cycle_stop_left_2(frame_buffer[start_evenled + 4 ]);
-		set_duty_cycle_stop_left_1(frame_buffer[start_evenled]);
+	// SET RED LEDs (PWM)
+	set_duty_cycle_stop_left_5(frame_buffer[start_evenled + 16 ]);
+	set_duty_cycle_stop_left_4(frame_buffer[start_evenled + 12 ]);
+	set_duty_cycle_stop_left_3(frame_buffer[start_evenled + 8 ]);
+	set_duty_cycle_stop_left_2(frame_buffer[start_evenled + 4 ]);
+	set_duty_cycle_stop_left_1(frame_buffer[start_evenled]);
 
-		set_duty_cycle_stop_ritht_1(frame_buffer[start_evenled + 20 ]);
-		set_duty_cycle_stop_ritht_2(frame_buffer[start_evenled + 24 ]);
-		set_duty_cycle_stop_ritht_3(frame_buffer[start_evenled + 28 ]);
-		set_duty_cycle_stop_ritht_4(frame_buffer[start_evenled + 32 ]);
-		set_duty_cycle_stop_ritht_5(frame_buffer[start_evenled + 36 ]);
+	set_duty_cycle_stop_ritht_1(frame_buffer[start_evenled + 20 ]);
+	set_duty_cycle_stop_ritht_2(frame_buffer[start_evenled + 24 ]);
+	set_duty_cycle_stop_ritht_3(frame_buffer[start_evenled + 28 ]);
+	set_duty_cycle_stop_ritht_4(frame_buffer[start_evenled + 32 ]);
+	set_duty_cycle_stop_ritht_5(frame_buffer[start_evenled + 36 ]);
 
-//		HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
-//		HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2);
-//		HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3);
-//		HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_4);
-//		HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
-//		HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
-//		HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_3);
-//		HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4);
-//		HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_2);
-//		HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_3);
+	while (!ARGB_Show_left());  		// Update RGBW LEDs    	(Takes time around 17 us)
+	while (!ARGB_Show_right());  		// Update RGBW LEDs		(Takes time around 17 us)
 
-		while (!ARGB_Show_left());  		// Update    	(Takes time around 17 us)
-		while (!ARGB_Show_right());  		// Update		(Takes time around 17 us)
+	interrupt_flag = 0;					// Tim 13
 
-		interrupt_flag = 0;				// Tim 13
-
-		HAL_GPIO_TogglePin(GPIOE, TEST_OUTPUT_1_Pin);
-
-		return true;
-////	}
-//	return false;
+	HAL_GPIO_TogglePin(GPIOE, TEST_OUTPUT_1_Pin);		// For debug (for measure frequency updates of frames)
 }
 
 // -----------------------------------------------------------------------------------------------------------

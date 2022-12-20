@@ -55,12 +55,10 @@ FATFS SDFatFs;
 ///////////////////////////////////////////////////////////////////////////////
 
 // UART ///////////////////////////////////////////////////////////////////////
-uint8_t uart_RX_data = 0;					// buffer for receive one char
-uint8_t  command_from_uart = 0;
-bool flag_received_command = false;
+uint8_t uart_RX_data = 0;					// Buffer for receive one char
+bool flag_received_command = false;			// This flag used for show that command from UART receive
 
-uint8_t frame_start_flag = 0;
-bool interrupt_animation_flag = false;
+bool interrupt_animation_flag = false;		// This flag need for be able to interrupt animation
 
 char rx_buf_command[10] = {0};
 uint8_t count_chars = 0;
@@ -72,7 +70,7 @@ uint8_t interrupt_flag = 0;
 ////////////////////////////////////////////////////////////////////////////////
 
 uint8_t data_ready_flag = 0;
-uint8_t data_write_flag = 1;
+bool data_write_flag = true;
 
 // data
 uint8_t frame_buffer[949] = {0};
@@ -113,7 +111,6 @@ SPI_HandleTypeDef hspi1;
 TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim3;
 TIM_HandleTypeDef htim4;
-TIM_HandleTypeDef htim5;
 TIM_HandleTypeDef htim8;
 TIM_HandleTypeDef htim13;
 DMA_HandleTypeDef hdma_tim8_ch3;
@@ -135,17 +132,22 @@ static void MX_TIM2_Init(void);
 static void MX_TIM3_Init(void);
 static void MX_TIM4_Init(void);
 static void MX_TIM8_Init(void);
-static void MX_TIM5_Init(void);
 static void MX_TIM13_Init(void);
 void MX_USB_HOST_Process(void);
 
 /* USER CODE BEGIN PFP */
-void init_tim_13(int msec)
+// ----------------------------------------------------------------------------
+void start_and_init_25_hz(int msec)
 {
 	msec = msec*10;
 	__HAL_TIM_SET_AUTORELOAD(&htim13, msec-1);
 
 	HAL_TIM_Base_Start_IT(&htim13);
+}
+// ----------------------------------------------------------------------------
+void stop_25_hz(void)
+{
+	HAL_TIM_Base_Stop_IT(&htim13);
 }
 // ----------------------------------------------------------------------------
 uint8_t read_framesfrom_bin_file(char* name)
@@ -155,10 +157,7 @@ uint8_t read_framesfrom_bin_file(char* name)
 	static uint32_t vFileSize = 0;
 	uint32_t vBytesReadCounter;
 
-	//uint8_t frame_buffer[949] = {0};									// Frame buffer
 	int size_buf_for_read = sizeof(frame_buffer);
-
-//	static int how_many_frames = 0;
 
 	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
 	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2);
@@ -199,7 +198,7 @@ uint8_t read_framesfrom_bin_file(char* name)
 	{
 		static int frame = 0;
 
-		if(frame >= how_many_frames)		// If all frames has been read
+		if(frame > how_many_frames)				// If all frames has been read
 		{
 			f_close(&MyFile);
 			open_file_flag = false;
@@ -208,9 +207,11 @@ uint8_t read_framesfrom_bin_file(char* name)
 			return 1;
 	  	}
 
-		for(frame; ((frame < how_many_frames) && (data_write_flag == 1)); frame++)
+		for(frame; ((frame <= how_many_frames) && (data_write_flag == true)); frame++)
 		{
 			//HAL_GPIO_TogglePin(GPIOE, TEST_OUTPUT_1_Pin);					// For measure
+
+			// INTERRUPT DOESNT WORK !!!!!!!!!!!!!!!!!!!!!!!!!!!!<<<<<<<<<<<<<<<<<<<<<<<<
 			if(interrupt_animation_flag == true)						// If was sent "STOP animation" command. 'z' key
 			{
 				interrupt_animation_flag = false;
@@ -221,11 +222,11 @@ uint8_t read_framesfrom_bin_file(char* name)
 				break;
 	  		}
 
-			memset(frame_buffer, 0, sizeof(frame_buffer));		// must be 4 buffer
+			memset(frame_buffer, 0, sizeof(frame_buffer));							// must be 4 buffer
 
 			f_lseek(&MyFile, frame + ((frame_size - 1)*frame));						// shift on one frame
 			f_read(&MyFile, aBuffer, vTemp, (UINT *)&vBytesReadCounter);
-			f_gets(frame_buffer, size_buf_for_read, &MyFile);     			// Read one fraime into buffer
+			f_gets(frame_buffer, size_buf_for_read, &MyFile);     					// Read one fraime into buffer
 
 			// SET Left RGBW LEDs
 			uint16_t number_of_rgbw_leds = 0;
@@ -250,14 +251,12 @@ uint8_t read_framesfrom_bin_file(char* name)
 	  			}
 	  		}
 
-
-			//ТУТ ПОСТАВИТИ ФЛАГ ГОТОВНОСТІ ДАНИХ  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>
-			data_write_flag = 0;
+			// Setting flags that data was loaded and ready to be show
+			data_write_flag = false;
 			data_ready_flag = 1;
-//
-	  		}
-	  		return 0;
 	  	}
+	  	return 0;
+	}
 }
 
 // uint8_t tim_increment = 0;
@@ -305,13 +304,12 @@ int main(void)
   MX_TIM3_Init();
   MX_TIM4_Init();
   MX_TIM8_Init();
-  MX_TIM5_Init();
   MX_TIM13_Init();
   /* USER CODE BEGIN 2 */
 
   HAL_Delay(100);
 
-  // LEDs //////////////////////////////////////////////////////////////////
+  // RGBW LEDs //////////////////////////////////////////////////////////////////
   ARGB_SetBrightness(255); 					 	// Set global brightness to 100%
   ARGB_Init();  								// Initialization
   turn_off_left_and_right_dtript();
@@ -340,13 +338,8 @@ int main(void)
   //////////////////////////////////////////////////////////////////////////
 
   // UART //////////////////////////////////////////////////////////////////
-  HAL_Delay(100);
   HAL_UART_Receive_IT(&huart3, &uart_RX_data, sizeof(uart_RX_data));		// Turn on receive on byte from UART in interrupt mode
   //////////////////////////////////////////////////////////////////////////
-
-  HAL_TIM_Base_Start_IT(&htim5);       										//використати цей таймер для синхронізації
-
-  init_tim_13(40);				// Set value in milisecond
 
   /* USER CODE END 2 */
 
@@ -354,31 +347,30 @@ int main(void)
   /* USER CODE BEGIN WHILE */
 
 
-
   while (1)
   {
-	  //test_double_buffer();
-	  //test_function_generate_delay();
-
 	  if(flag_received_command == true)
 	  {
 		  static char buf_str[10] = {0};
 		  static bool flag_firt_command = true;
 
-		  if(flag_firt_command == true)											// Read file first time
+		  if(flag_firt_command == true)												// Read file first time
 		  {
 			  memset(buf_str, 0, sizeof(buf_str));
 			  strcat(buf_str, rx_buf_command);
 			  strcat(buf_str, ".bin");
+
+			  start_and_init_25_hz(40);												// turn on 25 Hz interrupt
+
 			  flag_firt_command = false;
 		  }
 		  else
 		  {
 			  static bool print_flag = true;
 
-			  if(read_framesfrom_bin_file(buf_str) == 0)										// Read file
+			  if(read_framesfrom_bin_file(buf_str) == 0)							// Read file
 			  {
-				  if(print_flag == true)											// Print only one time
+				  if(print_flag == true)											// If file was opened first time
 				  {
 					  memset(msg_buf, 0, sizeof(msg_buf));
 					  strcat(msg_buf, rx_buf_command);
@@ -395,34 +387,26 @@ int main(void)
 				  strcat(msg_buf, "\n\r DONE \n\r");
 				  HAL_UART_Transmit_IT(&huart3, msg_buf, sizeof(msg_buf));
 
-				  flag_received_command = false;									// Out
+				  stop_25_hz();
+
+				  flag_received_command = false;									// Out (set flag that file was read)
 				  flag_firt_command = true;
 				  print_flag = true;
 			  }
 		  }
 
-
 		 // тут зробити читання і підготовку буффера					// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
 		 // зробити два буфера, один готується, другий					// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 		 //  можлива реальзація як черга з двома елементами  в ній   	// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-
 	  }
 
-
-	  // Вивести дані, якщо двні готові, і якщо таймер зробив тік
 	  if((interrupt_flag == 1) && (data_ready_flag == 1))
 	  {
-		  if(update_all_leds(NULL, how_many_frames) == true)
-		  {
-			  data_ready_flag = 0;					// Data was showed
-			  data_write_flag = 1;			// alowe read next frame
-		  }
+		  update_all_leds();
 
+		  data_ready_flag = 0;					// Data was showed
+		  data_write_flag = true;					// alowe read next frame
 	  }
-
-
 
 
     /* USER CODE END WHILE */
@@ -718,51 +702,6 @@ static void MX_TIM4_Init(void)
 
   /* USER CODE END TIM4_Init 2 */
   HAL_TIM_MspPostInit(&htim4);
-
-}
-
-/**
-  * @brief TIM5 Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_TIM5_Init(void)
-{
-
-  /* USER CODE BEGIN TIM5_Init 0 */
-
-  /* USER CODE END TIM5_Init 0 */
-
-  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
-  TIM_MasterConfigTypeDef sMasterConfig = {0};
-
-  /* USER CODE BEGIN TIM5_Init 1 */
-
-  /* USER CODE END TIM5_Init 1 */
-  htim5.Instance = TIM5;
-  htim5.Init.Prescaler = 8400-1;
-  htim5.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim5.Init.Period = 10000;
-  htim5.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-  htim5.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
-  if (HAL_TIM_Base_Init(&htim5) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
-  if (HAL_TIM_ConfigClockSource(&htim5, &sClockSourceConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
-  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
-  if (HAL_TIMEx_MasterConfigSynchronization(&htim5, &sMasterConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN TIM5_Init 2 */
-
-  /* USER CODE END TIM5_Init 2 */
 
 }
 
