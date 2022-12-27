@@ -11,9 +11,10 @@
 ../Core/Src/microSD/sd_spi.c:301:9:SD_SPI_ReadLongFile	32	static
 ../Core/Src/microSD/sd_spi.c:336:9:SD_SPI_WriteFile	120	static
 ../Core/Src/microSD/sd_spi.c:367:9:SD_SPI_GetFileInfo	24	static
-../Core/Src/microSD/sd_spi.c:430:6:SD_Error_Handler	8	static
-../Core/Src/microSD/sd_spi.c:436:6:test_function_generate_delay	8	static
-../Core/Src/microSD/sd_spi.c:446:6:update_all_leds	8	static
-../Core/Src/microSD/sd_spi.c:470:6:make_delay	16	static
-../Core/Src/microSD/sd_spi.c:476:9:open_my_bin_file	1016	static
-../Core/Src/microSD/sd_spi.c:574:6:create_example_bin	992	static
+../Core/Src/microSD/sd_spi.c:430:6:init_microSD	8	static
+../Core/Src/microSD/sd_spi.c:449:6:SD_Error_Handler	8	static
+../Core/Src/microSD/sd_spi.c:455:6:test_function_generate_delay	8	static
+../Core/Src/microSD/sd_spi.c:465:6:update_all_leds	8	static
+../Core/Src/microSD/sd_spi.c:489:6:make_delay	16	static
+../Core/Src/microSD/sd_spi.c:495:9:open_my_bin_file	1016	static
+../Core/Src/microSD/sd_spi.c:593:6:create_example_bin	992	static

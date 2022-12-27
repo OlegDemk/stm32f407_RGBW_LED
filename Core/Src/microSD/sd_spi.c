@@ -427,6 +427,25 @@ uint8_t SD_SPI_GetFileInfo(void)
 
 /****************************************************************************************************************/
 /****************************************************************************************************************/
+void init_microSD(void)
+{
+	if(disk_initialize(SDFatFs. drv) != 0)
+	{
+		while(1)
+		{
+			printf("\n\r-> ERROR: NO SD CARD! \n\r");
+			all_leds_animantion_error_state();
+		}
+	}
+	else
+	{
+		SD_SPI_GetFileInfo();
+		FATFS_UnLinkDriver(USER_Path);
+
+		all_leds_animantion_ok_state();
+	}
+}
+// -----------------------------------------------------------------------------------------------
 void SD_Error_Handler(void)
 {
 	LED_Red_ON;

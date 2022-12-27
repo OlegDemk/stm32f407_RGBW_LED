@@ -103,5 +103,6 @@ uint8_t open_my_bin_file(char* name);
 void test_function_generate_delay(void);
 
 void update_all_leds(void);
+void init_microSD(void);
 
 #endif /* INC_MICROSD_SD_SPI_H_ */

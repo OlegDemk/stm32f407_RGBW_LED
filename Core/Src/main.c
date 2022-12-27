@@ -95,6 +95,9 @@ extern int how_many_frames;
 
 Queue rx_Int_queue;
 
+uint8_t frame_buffer_A[949] = {0};
+uint8_t frame_buffer_B[949] = {0};
+
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -154,6 +157,32 @@ void stop_25_hz(void)
 	HAL_TIM_Base_Stop_IT(&htim13);
 }
 // ----------------------------------------------------------------------------
+void init_leds_pwm(void)
+{
+	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
+	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2);
+	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3);
+	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_4);
+	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
+	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
+	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_3);
+	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4);
+	HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_2);
+	HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_3);
+}
+// ----------------------------------------------------------------------------
+void init_uart3(void)
+{
+	 HAL_UART_Receive_IT(&huart3, &uart_RX_data, sizeof(uart_RX_data));		// Turn on receive on byte from UART in interrupt mode
+}
+// ----------------------------------------------------------------------------
+void init_rgbw_led_stript(void)
+{
+	ARGB_SetBrightness(255); 					 	// Set global brightness to 100%
+	ARGB_Init();  								// Initialization
+	turn_off_left_and_right_dtript();
+}
+ // ----------------------------------------------------------------------------
 // Make printf function
 #ifdef __GNUC__
 #define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
@@ -176,21 +205,13 @@ uint8_t read_framesfrom_bin_file(char* name)
 
 	int size_buf_for_read = sizeof(frame_buffer);
 
-	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
-	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2);
-	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3);
-	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_4);
-	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
-	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
-	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_3);
-	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4);
-	HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_2);
-	HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_3);
+	init_leds_pwm();
 
 	static bool open_file_flag = false;
-
 	if(open_file_flag == false)		// if file wasn't opened before
 	{
+//		how_many_frames = open_bin_file(name);
+
 		if(f_mount(&SDFatFs, (TCHAR const*)USER_Path, 0))
 		{
 			SD_Error_Handler();
@@ -228,61 +249,64 @@ uint8_t read_framesfrom_bin_file(char* name)
 //		{
 //			записати дані в чергу
 
-			for(frame; ((frame <= how_many_frames) && (data_write_flag == true)); frame++)
+		for(frame; ((frame <= how_many_frames) && (data_write_flag == true)); frame++)
+		{
+			//HAL_GPIO_TogglePin(GPIOE, TEST_OUTPUT_1_Pin);					// For measure
+
+			// INTERRUPT DOESNT WORK !!!!!!!!!!!!!!!!!!!!!!!!!!!!<<<<<<<<<<<<<<<<<<<<<<<<
+			if(interrupt_animation_flag == true)						// If was sent "STOP animation" command. 'z' key
 			{
-				//HAL_GPIO_TogglePin(GPIOE, TEST_OUTPUT_1_Pin);					// For measure
+				interrupt_animation_flag = false;
+				stop_light_all_turn_off();
+				turn_off_left_and_right_dtript();
+				HAL_Delay(100);
 
-				// INTERRUPT DOESNT WORK !!!!!!!!!!!!!!!!!!!!!!!!!!!!<<<<<<<<<<<<<<<<<<<<<<<<
-				if(interrupt_animation_flag == true)						// If was sent "STOP animation" command. 'z' key
-				{
-					interrupt_animation_flag = false;
-					stop_light_all_turn_off();
-					turn_off_left_and_right_dtript();
-					HAL_Delay(100);
-
-					break;
-				}
-
-				memset(frame_buffer, 0, sizeof(frame_buffer));							// must be 4 buffer
-
-				f_lseek(&MyFile, frame + ((frame_size - 1)*frame));						// shift on one frame
-				f_read(&MyFile, aBuffer, vTemp, (UINT *)&vBytesReadCounter);
-				f_gets(frame_buffer, size_buf_for_read, &MyFile);     					// Read one fraime into buffer
-
-				// SET Left RGBW LEDs
-				uint16_t number_of_rgbw_leds = 0;
-				int k = 0;
-				for(k = end_left_led; k >= strat_left_led; k--)		// 84 LEDs
-				{
-					if(k%4 == 0)
-					{
-						set_left_one_rgbw_led(number_of_rgbw_leds, frame_buffer[k], frame_buffer[k+1], frame_buffer[k+2], frame_buffer[k+3]);
-						number_of_rgbw_leds++;
-					}
-				}
-
-				// SET Right RGBW LEDs
-				number_of_rgbw_leds = 0;
-				for(k = end_ritht_led; k >= strat_right_led; k--)
-				{
-					if(k%4 == 0)
-					{
-						set_right_one_rgbw_led(number_of_rgbw_leds, frame_buffer[k], frame_buffer[k+1], frame_buffer[k+2], frame_buffer[k+3]);
-						number_of_rgbw_leds++;
-					}
-				}
-
-				// Setting flags that data was loaded and ready to be show
-				data_write_flag = false;
-				data_ready_flag = true;
-
+				break;
 			}
+
+			memset(frame_buffer, 0, sizeof(frame_buffer));							// must be 4 buffer
+
+			f_lseek(&MyFile, frame + ((frame_size - 1)*frame));						// shift on one frame
+			f_gets(frame_buffer, size_buf_for_read, &MyFile);     					// Read one fraime into buffer
+
+			// SET Left RGBW LEDs
+			uint16_t number_of_rgbw_leds = 0;
+			int k = 0;
+			for(k = end_left_led; k >= strat_left_led; k--)		// 84 LEDs
+			{
+				if(k%4 == 0)
+				{
+					set_left_one_rgbw_led(number_of_rgbw_leds, frame_buffer[k], frame_buffer[k+1], frame_buffer[k+2], frame_buffer[k+3]);
+					number_of_rgbw_leds++;
+				}
+			}
+
+			// SET Right RGBW LEDs
+			number_of_rgbw_leds = 0;
+			for(k = end_ritht_led; k >= strat_right_led; k--)
+			{
+				if(k%4 == 0)
+				{
+					set_right_one_rgbw_led(number_of_rgbw_leds, frame_buffer[k], frame_buffer[k+1], frame_buffer[k+2], frame_buffer[k+3]);
+					number_of_rgbw_leds++;
+				}
+			}
+
+			// Setting flags that data was loaded and ready to be show
+			data_write_flag = false;
+			data_ready_flag = true;
+
+		}
 //		}
 
 	  	return 0;
 	}
 }
+// ----------------------------------------------------------------------------
 
+
+
+// ----------------------------------------------------------------------------
 // uint8_t tim_increment = 0;
 /* USER CODE END PFP */
 
@@ -333,34 +357,9 @@ int main(void)
 
   HAL_Delay(100);
 
-  // RGBW LEDs //////////////////////////////////////////////////////////////////
-  ARGB_SetBrightness(255); 					 	// Set global brightness to 100%
-  ARGB_Init();  								// Initialization
-  turn_off_left_and_right_dtript();
-  //////////////////////////////////////////////////////////////////////////
-
-  // SD Card //////////////////////////////////////////////////////////////
-  char msg_buf[30] = {0};
-  if(disk_initialize(SDFatFs. drv) != 0)
-  {
-	  while(1)
-	  {
-		  printf("\n\r-> ERROR: NO SD CARD! \n\r");
-		  all_leds_animantion_error_state();
-	  }
-  }
-  else
-  {
-	  SD_SPI_GetFileInfo();
-	  FATFS_UnLinkDriver(USER_Path);
-
-	  all_leds_animantion_ok_state();
-  }
-  //////////////////////////////////////////////////////////////////////////
-
-  // UART //////////////////////////////////////////////////////////////////
-  HAL_UART_Receive_IT(&huart3, &uart_RX_data, sizeof(uart_RX_data));		// Turn on receive on byte from UART in interrupt mode
-  //////////////////////////////////////////////////////////////////////////
+  init_rgbw_led_stript();
+  init_microSD();
+  init_uart3();					// Receive commands from com port
 
   /* USER CODE END 2 */
 
@@ -393,7 +392,6 @@ int main(void)
 			  {
 				  if(print_flag == true)											// If file was opened first time
 				  {
-
 					  printf("File %s is working...  \n\r", rx_buf_command);
 
 					  print_flag = false;
@@ -1018,7 +1016,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
 	if(htim == &htim13)
 	{
-		HAL_GPIO_TogglePin(GPIOE, TEST_OUTPUT_2_Pin);
+		HAL_GPIO_TogglePin(GPIOE, TEST_OUTPUT_2_Pin);			// For debug
 		interrupt_flag = true;
 		//HAL_TIM_Base_Stop_IT(&htim13);
 	}
