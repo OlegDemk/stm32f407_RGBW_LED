@@ -25,6 +25,7 @@ Core/Src/light/led_stop \
 Core/Src/light/led_stript \
 Core/Src \
 Core/Src/microSD \
+Core/Src/queue \
 Core/Startup \
 Drivers/STM32F4xx_HAL_Driver/Src \
 FATFS/App \

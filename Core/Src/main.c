@@ -33,6 +33,7 @@
 #include "light/led_stript/ARGB.h"
 #include "light/led_stript/control.h"
 #include "light/led_stop/stop_light.h"
+#include "queue/queue.h"
 
 /* USER CODE END Includes */
 
@@ -66,10 +67,10 @@ uint8_t count_chars = 0;
 
 
 // Generate 25 Hz //////////////////////////////////////////////////////////////
-uint8_t interrupt_flag = 0;
+bool interrupt_flag = false;
 ////////////////////////////////////////////////////////////////////////////////
 
-uint8_t data_ready_flag = 0;
+bool data_ready_flag = false;
 bool data_write_flag = true;
 
 // data
@@ -90,6 +91,9 @@ extern int how_many_leds_down_part;
 
 //extern int frame;
 extern int how_many_frames;
+
+
+Queue rx_Int_queue;
 
 /* USER CODE END PTD */
 
@@ -150,6 +154,19 @@ void stop_25_hz(void)
 	HAL_TIM_Base_Stop_IT(&htim13);
 }
 // ----------------------------------------------------------------------------
+// Make printf function
+#ifdef __GNUC__
+#define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
+#else
+#define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
+#endif
+
+PUTCHAR_PROTOTYPE
+{
+  HAL_UART_Transmit(&huart3, (uint8_t *)&ch, 1, HAL_MAX_DELAY);
+  return ch;
+}
+// ----------------------------------------------------------------------------
 uint8_t read_framesfrom_bin_file(char* name)
 {
 	uint16_t vTemp = 0;
@@ -207,54 +224,61 @@ uint8_t read_framesfrom_bin_file(char* name)
 			return 1;
 	  	}
 
-		for(frame; ((frame <= how_many_frames) && (data_write_flag == true)); frame++)
-		{
-			//HAL_GPIO_TogglePin(GPIOE, TEST_OUTPUT_1_Pin);					// For measure
+//		if(queue != full )		// якщо в черзі є ще місце
+//		{
+//			записати дані в чергу
 
-			// INTERRUPT DOESNT WORK !!!!!!!!!!!!!!!!!!!!!!!!!!!!<<<<<<<<<<<<<<<<<<<<<<<<
-			if(interrupt_animation_flag == true)						// If was sent "STOP animation" command. 'z' key
+			for(frame; ((frame <= how_many_frames) && (data_write_flag == true)); frame++)
 			{
-				interrupt_animation_flag = false;
-				stop_light_all_turn_off();
-				turn_off_left_and_right_dtript();
-				HAL_Delay(100);
+				//HAL_GPIO_TogglePin(GPIOE, TEST_OUTPUT_1_Pin);					// For measure
 
-				break;
-	  		}
-
-			memset(frame_buffer, 0, sizeof(frame_buffer));							// must be 4 buffer
-
-			f_lseek(&MyFile, frame + ((frame_size - 1)*frame));						// shift on one frame
-			f_read(&MyFile, aBuffer, vTemp, (UINT *)&vBytesReadCounter);
-			f_gets(frame_buffer, size_buf_for_read, &MyFile);     					// Read one fraime into buffer
-
-			// SET Left RGBW LEDs
-			uint16_t number_of_rgbw_leds = 0;
-			int k = 0;
-			for(k = end_left_led; k >= strat_left_led; k--)		// 84 LEDs
-			{
-				if(k%4 == 0)
+				// INTERRUPT DOESNT WORK !!!!!!!!!!!!!!!!!!!!!!!!!!!!<<<<<<<<<<<<<<<<<<<<<<<<
+				if(interrupt_animation_flag == true)						// If was sent "STOP animation" command. 'z' key
 				{
-					set_left_one_rgbw_led(number_of_rgbw_leds, frame_buffer[k], frame_buffer[k+1], frame_buffer[k+2], frame_buffer[k+3]);
-					number_of_rgbw_leds++;
-	  			}
-	  		}
+					interrupt_animation_flag = false;
+					stop_light_all_turn_off();
+					turn_off_left_and_right_dtript();
+					HAL_Delay(100);
 
-			// SET Right RGBW LEDs
-			number_of_rgbw_leds = 0;
-			for(k = end_ritht_led; k >= strat_right_led; k--)
-	  		{
-	  			if(k%4 == 0)
-	  			{
-	  				set_right_one_rgbw_led(number_of_rgbw_leds, frame_buffer[k], frame_buffer[k+1], frame_buffer[k+2], frame_buffer[k+3]);
-	  				number_of_rgbw_leds++;
-	  			}
-	  		}
+					break;
+				}
 
-			// Setting flags that data was loaded and ready to be show
-			data_write_flag = false;
-			data_ready_flag = 1;
-	  	}
+				memset(frame_buffer, 0, sizeof(frame_buffer));							// must be 4 buffer
+
+				f_lseek(&MyFile, frame + ((frame_size - 1)*frame));						// shift on one frame
+				f_read(&MyFile, aBuffer, vTemp, (UINT *)&vBytesReadCounter);
+				f_gets(frame_buffer, size_buf_for_read, &MyFile);     					// Read one fraime into buffer
+
+				// SET Left RGBW LEDs
+				uint16_t number_of_rgbw_leds = 0;
+				int k = 0;
+				for(k = end_left_led; k >= strat_left_led; k--)		// 84 LEDs
+				{
+					if(k%4 == 0)
+					{
+						set_left_one_rgbw_led(number_of_rgbw_leds, frame_buffer[k], frame_buffer[k+1], frame_buffer[k+2], frame_buffer[k+3]);
+						number_of_rgbw_leds++;
+					}
+				}
+
+				// SET Right RGBW LEDs
+				number_of_rgbw_leds = 0;
+				for(k = end_ritht_led; k >= strat_right_led; k--)
+				{
+					if(k%4 == 0)
+					{
+						set_right_one_rgbw_led(number_of_rgbw_leds, frame_buffer[k], frame_buffer[k+1], frame_buffer[k+2], frame_buffer[k+3]);
+						number_of_rgbw_leds++;
+					}
+				}
+
+				// Setting flags that data was loaded and ready to be show
+				data_write_flag = false;
+				data_ready_flag = true;
+
+			}
+//		}
+
 	  	return 0;
 	}
 }
@@ -321,10 +345,7 @@ int main(void)
   {
 	  while(1)
 	  {
-		  strcat(msg_buf, "\n\r-> ERROR: NO SD CARD! \n\r");
-		  HAL_UART_Transmit_IT(&huart3, msg_buf, sizeof(msg_buf));
-		  HAL_Delay(100);
-
+		  printf("\n\r-> ERROR: NO SD CARD! \n\r");
 		  all_leds_animantion_error_state();
 	  }
   }
@@ -372,20 +393,15 @@ int main(void)
 			  {
 				  if(print_flag == true)											// If file was opened first time
 				  {
-					  memset(msg_buf, 0, sizeof(msg_buf));
-					  strcat(msg_buf, rx_buf_command);
-					  strcat(msg_buf, ": working...  \n\r");
-					  HAL_UART_Transmit_IT(&huart3, msg_buf, sizeof(msg_buf));
+
+					  printf("File %s is working...  \n\r", rx_buf_command);
 
 					  print_flag = false;
 				  }
 			  }
 			  else																	// Print "DONE" if all file was read
 			  {
-				  memset(rx_buf_command, 0, sizeof(rx_buf_command));
-				  memset(msg_buf, 0, sizeof(msg_buf));
-				  strcat(msg_buf, "\n\r DONE \n\r");
-				  HAL_UART_Transmit_IT(&huart3, msg_buf, sizeof(msg_buf));
+				  printf("\n\r DONE \n\r");
 
 				  stop_25_hz();
 
@@ -395,18 +411,16 @@ int main(void)
 			  }
 		  }
 
-
-		 // зробити два буфера, один готується, другий					// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-		 //  можлива реальзація як черга з двома елементами  в ній   	// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 	  }
 
 	  // If data is ready and time is = 25 Hz - show it
-	  if((interrupt_flag == 1) && (data_ready_flag == 1))
+//	  Якщо дані в черзі є, вивести їх
+	  if((interrupt_flag == true) && (data_ready_flag == true))
 	  {
 		  update_all_leds();
 
-		  data_ready_flag = 0;					// Data was showed
-		  data_write_flag = true;					// alowe read next frame
+		  data_ready_flag = false;					// Data was showed
+		  data_write_flag = true;					// allow read next frame
 	  }
 
 
@@ -1005,7 +1019,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	if(htim == &htim13)
 	{
 		HAL_GPIO_TogglePin(GPIOE, TEST_OUTPUT_2_Pin);
-		interrupt_flag = 1;
+		interrupt_flag = true;
 		//HAL_TIM_Base_Stop_IT(&htim13);
 	}
 }
@@ -1065,141 +1079,6 @@ void all_leds_animantion_error_state(void)
 }
 // ------------------------------------------------------------------------------------
 
-//	  uint16_t vTemp = 0;
-//	  uint32_t vIndex = 0;
-//	  static uint32_t vFileSize = 0;
-//	  uint32_t vBytesReadCounter;
-//
-//	  uint8_t frame_buffer[949] = {0};									// Frame buffer
-//	  int size_buf_for_read = sizeof(frame_buffer);
-//
-//	  static int how_many_frames = 0;
-//
-//	  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
-//	  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2);
-//	  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3);
-//	  	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_4);
-//	  	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
-//	  	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
-//	  	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_3);
-//	  	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4);
-//	  	HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_2);
-//	  	HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_3);
-//
-//
-//	  	static bool open_file_flag = false;
-//
-//	  	if(open_file_flag == false)		// if file wasn't opened before
-//	  	{
-//	  		if(f_mount(&SDFatFs, (TCHAR const*)USER_Path, 0))
-//	  		{
-//	  			SD_Error_Handler();
-//	  		}
-//	  		else
-//	  		{
-//	  			if(f_open(&MyFile, name, FA_READ))
-//	  			{
-//	  				SD_Error_Handler();
-//	  			}
-//	  			else
-//	  			{
-//	  				vFileSize = MyFile.obj.objsize;									// Get size of current file
-//	  				how_many_frames = vFileSize/frame_size;							// How many frames into current file
-//
-//	  				open_file_flag = true;
-//	  				return 0;
-//	  			}
-//	  		}
-//	  	}
-//	  	else
-//	  	{
-//	  		static int frame = 0;
-//
-//	  		if(frame >= how_many_frames)		// If all frames has been read
-//	  		{
-//	  			f_close(&MyFile);
-//	  			open_file_flag = false;
-//	  			frame = 0;
-//
-//	  			return 1;
-//	  		}
-//
-//	  		for(frame; ((frame < how_many_frames) && (interrupt_flag == 1)); frame++)
-//	  		{
-//	  			//HAL_GPIO_TogglePin(GPIOE, TEST_OUTPUT_1_Pin);					// For measure
-//
-//	  			if(interrupt_animation_flag == true)						// If was sent "STOP animation" command. 'z' key
-//	  			{
-//	  				interrupt_animation_flag = false;
-//	  				stop_light_all_turn_off();
-//	  				turn_off_left_and_right_dtript();
-//	  				HAL_Delay(100);
-//
-//	  				break;
-//	  			}
-//
-//	  			memset(frame_buffer, 0, sizeof(frame_buffer));		// must be 4 buffer
-//
-//	  			f_lseek(&MyFile, frame + ((frame_size - 1)*frame));						// shift on one frame
-//	  			f_read(&MyFile, aBuffer, vTemp, (UINT *)&vBytesReadCounter);
-//	  			f_gets(frame_buffer, size_buf_for_read, &MyFile);     			// Read one fraime into buffer
-//
-//	  //			if((frame > 316) && (frame < 330))			// Place in 7.bin file where somsing wrong
-//	  //			{
-//	  //				int ggg = 99;
-//	  //			}
-//
-//	  			// SET Left RGBW LEDs
-//	  			uint16_t number_of_rgbw_leds = 0;
-//	  			int k = 0;
-//	  			for(k = end_left_led; k >= strat_left_led; k--)		// 84 LEDs
-//	  			{
-//	  				if(k%4 == 0)
-//	  				{
-//	  					set_left_one_rgbw_led(number_of_rgbw_leds, frame_buffer[k], frame_buffer[k+1], frame_buffer[k+2], frame_buffer[k+3]);
-//	  					number_of_rgbw_leds++;
-//	  				}
-//	  			}
-//
-//	  			// SET Right RGBW LEDs
-//	  			number_of_rgbw_leds = 0;
-//	  			for(k = end_ritht_led; k >= strat_right_led; k--)
-//	  			{
-//	  				if(k%4 == 0)
-//	  				{
-//	  					set_right_one_rgbw_led(number_of_rgbw_leds, frame_buffer[k], frame_buffer[k+1], frame_buffer[k+2], frame_buffer[k+3]);
-//	  					number_of_rgbw_leds++;
-//	  				}
-//	  			}
-//
-//	  			// make_delay(267);
-//
-//	  			// тут чекати на флаг 25 Гц  			// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-//
-//	  			// SET RED LEDs
-//	  			set_duty_cycle_stop_left_5(frame_buffer[start_evenled + 16 ]);
-//	  			set_duty_cycle_stop_left_4(frame_buffer[start_evenled + 12 ]);
-//	  			set_duty_cycle_stop_left_3(frame_buffer[start_evenled + 8 ]);
-//	  			set_duty_cycle_stop_left_2(frame_buffer[start_evenled + 4 ]);
-//	  			set_duty_cycle_stop_left_1(frame_buffer[start_evenled]);
-//
-//	  			set_duty_cycle_stop_ritht_1(frame_buffer[start_evenled + 20 ]);
-//	  			set_duty_cycle_stop_ritht_2(frame_buffer[start_evenled + 24 ]);
-//	  			set_duty_cycle_stop_ritht_3(frame_buffer[start_evenled + 28 ]);
-//	  			set_duty_cycle_stop_ritht_4(frame_buffer[start_evenled + 32 ]);
-//	  			set_duty_cycle_stop_ritht_5(frame_buffer[start_evenled + 36 ]);
-//
-//	  			// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-//
-//	  			while (!ARGB_Show_left());  		// Update    	(Takes time around 17 us)
-//	  			while (!ARGB_Show_right());  		// Update		(Takes time around 17 us)
-//
-//	  			interrupt_flag = 0;				// Tim 13
-//
-//	  			// HAL_GPIO_WritePin(GPIOE, TEST_OUTPUT_2_Pin, GPIO_PIN_SET);
-//	  			//HAL_GPIO_TogglePin(GPIOE, TEST_OUTPUT_1_Pin);					// For measure
-//	  		}
-//	  		return 0;
 /* USER CODE END 4 */
 
 /**

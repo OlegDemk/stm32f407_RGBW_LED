@@ -19,6 +19,7 @@ RM := rm -rf
 -include FATFS/App/subdir.mk
 -include Drivers/STM32F4xx_HAL_Driver/Src/subdir.mk
 -include Core/Startup/subdir.mk
+-include Core/Src/queue/subdir.mk
 -include Core/Src/microSD/subdir.mk
 -include Core/Src/light/led_stript/subdir.mk
 -include Core/Src/light/led_stop/subdir.mk

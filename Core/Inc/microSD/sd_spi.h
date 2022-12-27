@@ -96,12 +96,10 @@ void test_function(void);
 void test_function_2(int delay);
 
 // Open files
-uint8_t open_bin_file(char* name);
 void create_example_bin(void);
 void create_example_file(void);
 uint8_t open_my_bin_file(char* name);
 
-void test_double_buffer(char* name);
 void test_function_generate_delay(void);
 
 void update_all_leds(void);
