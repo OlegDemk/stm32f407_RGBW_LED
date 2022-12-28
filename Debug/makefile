@@ -72,8 +72,8 @@ all: main-build
 main-build: lights_RGBW_PWM_DMA_two_chanels2_WORKS7.elf secondary-outputs
 
 # Tool invocations
-lights_RGBW_PWM_DMA_two_chanels2_WORKS7.elf lights_RGBW_PWM_DMA_two_chanels2_WORKS7.map: $(OBJS) $(USER_OBJS) /home/odemki/my_files/work/work_projects/1.Current/9.Valeo_CES/12.stm32f407vg_LEDs/STM32F407VGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "lights_RGBW_PWM_DMA_two_chanels2_WORKS7.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/home/odemki/my_files/work/work_projects/1.Current/9.Valeo_CES/12.stm32f407vg_LEDs/STM32F407VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="lights_RGBW_PWM_DMA_two_chanels2_WORKS7.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+lights_RGBW_PWM_DMA_two_chanels2_WORKS7.elf lights_RGBW_PWM_DMA_two_chanels2_WORKS7.map: $(OBJS) $(USER_OBJS) /home/odemki/my_files/work/work_projects/1.Current/9.Valeo_CES/stm32f407_RGBW_LED/STM32F407VGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "lights_RGBW_PWM_DMA_two_chanels2_WORKS7.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/home/odemki/my_files/work/work_projects/1.Current/9.Valeo_CES/stm32f407_RGBW_LED/STM32F407VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="lights_RGBW_PWM_DMA_two_chanels2_WORKS7.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

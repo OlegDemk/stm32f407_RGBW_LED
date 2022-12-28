@@ -42,6 +42,7 @@
 void all_leds_animantion_ok_state(void);
 void all_leds_animantion_error_state(void);
 
+
 // SD Card ////////////////////////////////////////////////////////////////////
 extern FATFS *fs;
 extern FIL MyFile;
@@ -179,7 +180,7 @@ void init_uart3(void)
 void init_rgbw_led_stript(void)
 {
 	ARGB_SetBrightness(255); 					 	// Set global brightness to 100%
-	ARGB_Init();  								// Initialization
+	ARGB_Init();  									// Initialization
 	turn_off_left_and_right_dtript();
 }
  // ----------------------------------------------------------------------------
@@ -196,6 +197,7 @@ PUTCHAR_PROTOTYPE
   return ch;
 }
 // ----------------------------------------------------------------------------
+
 uint8_t read_framesfrom_bin_file(char* name)
 {
 	uint16_t vTemp = 0;
@@ -207,30 +209,28 @@ uint8_t read_framesfrom_bin_file(char* name)
 
 	init_leds_pwm();
 
+	// BUG: Якщо вибрати не існуючий файл 20.bin, а потім вибрати файл 1.bin то відкриється 10.bin файл
 	static bool open_file_flag = false;
 	if(open_file_flag == false)		// if file wasn't opened before
 	{
-//		how_many_frames = open_bin_file(name);
-
-		if(f_mount(&SDFatFs, (TCHAR const*)USER_Path, 0))
+		if((f_mount(&SDFatFs, (TCHAR const*)USER_Path, 0)) != FR_OK)
 		{
+			printf("ERROR: No SD Card\n\r");
 			SD_Error_Handler();
+			return 1;
 	  	}
-		else
+		if((f_open(&MyFile, name, FA_READ)) != FR_OK)
 		{
-			if(f_open(&MyFile, name, FA_READ))
-			{
-				SD_Error_Handler();
-	  		}
-			else
-			{
-				vFileSize = MyFile.obj.objsize;									// Get size of current file
-				how_many_frames = vFileSize/frame_size;							// How many frames into current file
-
-				open_file_flag = true;
-				return 0;
-	  		}
+			printf("ERROR: No file with such name\n\r");
+			SD_Error_Handler();
+			return 1;
 	  	}
+
+		vFileSize = MyFile.obj.objsize;									// Get size of current file
+		how_many_frames = vFileSize/frame_size;							// How many frames into current file
+
+		open_file_flag = true;
+		return 0;
 	}
 	else
 	{
@@ -408,7 +408,6 @@ int main(void)
 				  print_flag = true;
 			  }
 		  }
-
 	  }
 
 	  // If data is ready and time is = 25 Hz - show it
